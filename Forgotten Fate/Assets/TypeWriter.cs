@@ -3,18 +3,18 @@ using System.Collections;
 
 public class TypeWriter : MonoBehaviour
 {
-	private const float WAIT_TIME = 0.05f;
+	public float textSpeed = 0.05f;
 	
-	private float waitTimer = 0.0f;
-	private string wholeText = "This is a simple text. Is this fast enough for you Sam?";
-	private string typewriterText = "";
-	private int currentIndex = 0;
+	float waitTimer = 0.0f;
+	string wholeText = "This is a simple text. Is this fast enough for you Sam?";
+	string typewriterText = "";
+	int currentIndex = 0;
 	
 	void Update ()
 	{
 		waitTimer += Time.deltaTime;
 		
-		if (waitTimer > WAIT_TIME && currentIndex < wholeText.Length)
+		if (waitTimer > textSpeed && currentIndex < wholeText.Length)
 		{            
 			typewriterText += wholeText[currentIndex];
 			waitTimer = 0.0f;
