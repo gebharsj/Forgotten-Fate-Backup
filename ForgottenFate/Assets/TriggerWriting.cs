@@ -22,7 +22,9 @@ public class TriggerWriting : MonoBehaviour {
 	void OnTriggerEnter (Collider Cube)
 	{
 		Debug.Log ("Cheese!");
+		wholeText = "One End";
 		Debug.Log (wholeText + "LOL");
+
 
 	}
 }
