@@ -3,7 +3,8 @@ using System.Collections;
 
 public class TriggerWriting : MonoBehaviour {
 	
-	public string wholeText = "This is a simple text. Is this fast enough for you Sam?";
+	public string wholeText = "This is a simple text. Is this fast enough for you Sam? ";
+
 
 
 
@@ -21,7 +22,7 @@ public class TriggerWriting : MonoBehaviour {
 	void OnTriggerEnter (Collider Cube)
 	{
 		Debug.Log ("Cheese!");
-		wholeText = "Hello World!";
 		Debug.Log (wholeText + "LOL");
+
 	}
 }

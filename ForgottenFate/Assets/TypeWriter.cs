@@ -3,7 +3,7 @@ using System.Collections;
 
 public class TypeWriter : MonoBehaviour
 {
-	private const float WAIT_TIME = 0.05f;
+	private const float WAIT_TIME = 0.00001f;
 	
 	private float waitTimer = 0.0f;
 	public string wholeText = "";
@@ -39,6 +39,8 @@ public class TypeWriter : MonoBehaviour
 			if (currentIndex == wholeText.Length)
 			{
 				clickActivation = false;
+				currentIndex = 0;
+
 			}
 
 		}
@@ -46,6 +48,6 @@ public class TypeWriter : MonoBehaviour
 	
 	void OnGUI()
 	{
-		GUI.TextArea(new Rect(0.0f, 0.0f, 300.0f, 100.0f), typewriterText);
+		GUI.TextArea(new Rect(0.0f, 0.0f, Screen.width, Screen.height/3), typewriterText);
 	}
 }
