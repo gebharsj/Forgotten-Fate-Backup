@@ -7,12 +7,12 @@ public class TriggerWriting : MonoBehaviour {
 
 	public bool gTrigger = false;
 
-
-
+	public GameObject Texter;
 
 	// Use this for initialization
 	void Start () {
 		wholeText = "This is a simple text. Is this fast enough for you Sam?";
+		Texter.GetComponent<TypeWriter> ().enabled = false;
 		//Debug.Log (wholeText);
 	}
 	
@@ -23,14 +23,19 @@ public class TriggerWriting : MonoBehaviour {
 
 	void OnTriggerStay (Collider Cube)
 	{
-		gTrigger = true;
-		wholeText = "One End";
-		Debug.Log (wholeText + "LOL");
+		if (Input.GetKeyDown ("e")) {
+			Texter.GetComponent<TypeWriter> ().enabled = true;
+			gTrigger = true;
+			wholeText = "One End";
+			Debug.Log (wholeText + "LOL");
+		}
 	}
 
 	void OnTriggerExit (Collider Cube)
 	{
 		wholeText = "";
 		TypeWriter.textNum = 0;
+		gTrigger = false;
+		Texter.GetComponent<TypeWriter> ().enabled = false;
 	}
 }

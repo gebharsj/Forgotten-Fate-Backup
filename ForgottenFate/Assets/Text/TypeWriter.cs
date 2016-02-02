@@ -17,10 +17,13 @@ public class TypeWriter : MonoBehaviour
 	private bool buttonActivation = false;
 	private bool isFinished = false;
 
+	public GameObject player;
+
+	public Texture texture;
+
 	void Start(){
 		wholeText = "Still Pulling From TypeWriter";
 	}
-
 
 	void Update ()
 	{
@@ -28,6 +31,8 @@ public class TypeWriter : MonoBehaviour
 		{ 
 			buttonActivation = true;
 			isFinished = false;
+			player.GetComponent<PlayerMovement> ().enabled = false;
+			player.GetComponent<Rigidbody> ().velocity = Vector3.zero;
 		}
 
 		if (buttonActivation)
@@ -53,7 +58,6 @@ public class TypeWriter : MonoBehaviour
 					textNum++;
 					Debug.Log (textNum);
 				}
-
 			}
 		}
 	}
@@ -68,11 +72,15 @@ public class TypeWriter : MonoBehaviour
 				typewriterText = "";
 				buttonActivation = false;
 			}
-			GUI.TextArea (new Rect (0.0f, 0.0f, Screen.width, Screen.height / 3), otherText);
+
+			texture = GameObject.Find ("Texter").GetComponent<TextWrangler> ().texture;
+			GUI.TextArea (new Rect (50, 0.0f, Screen.width, Screen.height / 3), otherText);
+			GUI.DrawTexture (new Rect(0, 0, 50, 50), texture, ScaleMode.ScaleAndCrop, true, 10.0F);
 		}
 		else
 		{
-			GUI.TextArea (new Rect (0.0f, 0.0f, Screen.width, Screen.height / 3), typewriterText);
+			GUI.DrawTexture (new Rect(0, 0, 50, 50), texture, ScaleMode.ScaleAndCrop, true, 10.0F);
+			GUI.TextArea (new Rect (50, 0.0f, Screen.width, Screen.height / 3), typewriterText);
 		}
 	}
 }
