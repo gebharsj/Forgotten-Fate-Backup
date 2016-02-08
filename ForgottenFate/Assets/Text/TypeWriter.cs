@@ -68,6 +68,7 @@ public class TypeWriter : MonoBehaviour
 		{
 			otherText = typewriterText;
 			texture = GameObject.Find ("Texter").GetComponent<TextWrangler> ().texture;
+
 			if (Input.GetKeyDown("e"))
 			{
 				typewriterText = "";
