@@ -33,11 +33,11 @@ public class TypeWriter : MonoBehaviour
 			isFinished = false;
 			player.GetComponent<PlayerMovement> ().enabled = false;
 			player.GetComponent<Rigidbody> ().velocity = Vector3.zero;
+
 		}
 
 		if (buttonActivation)
 		{
-			//if (Input.GetMouseButton (LEFT_MOUSE_BUTTON))
 			waitTimer += Time.deltaTime;
 			wholeText = GameObject.Find ("Texter").GetComponent<TextWrangler> ().wholeText;
 			
@@ -56,7 +56,7 @@ public class TypeWriter : MonoBehaviour
 				if (wholeText != "")
 				{
 					textNum++;
-					Debug.Log (textNum);
+					Debug.Log (textNum + " After");
 				}
 			}
 		}
@@ -67,13 +67,13 @@ public class TypeWriter : MonoBehaviour
 		if (isFinished) 
 		{
 			otherText = typewriterText;
+			texture = GameObject.Find ("Texter").GetComponent<TextWrangler> ().texture;
 			if (Input.GetKeyDown("e"))
 			{
 				typewriterText = "";
 				buttonActivation = false;
 			}
 
-			texture = GameObject.Find ("Texter").GetComponent<TextWrangler> ().texture;
 			GUI.TextArea (new Rect (50, 0.0f, Screen.width, Screen.height / 3), otherText);
 			GUI.DrawTexture (new Rect(0, 0, 50, 50), texture, ScaleMode.ScaleAndCrop, true, 10.0F);
 		}

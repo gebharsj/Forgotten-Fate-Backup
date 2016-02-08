@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+﻿/*using UnityEngine;
 using UnityEditor;
 using System.Collections;
 
@@ -14,4 +14,6 @@ public class CustomConversationEditor : Editor {
         var cs = (ConversationScript)target;
         cs.conversation = EditorGUILayout.TextArea(text, GUILayout.Height(20));
     }
-}
+}*/
+
+//commented out to avoid errors

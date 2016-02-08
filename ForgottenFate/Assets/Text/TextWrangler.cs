@@ -5,13 +5,13 @@ public class TextWrangler : MonoBehaviour {
 
 	public string wholeText = "";
 
-	public bool georgeTrigger = false;
+	private bool georgeTrigger = false;
 
 	public GameObject player;
 
-	public Texture texture;
-	public Texture texture1;
-	public Texture texture2;
+	public Texture texture; //gets pulled in the Type Writer script
+	public Texture Player; //the main player sprite doesn't change
+	public Texture NPC;
 
 	public static int	textNum	=	0;
 
@@ -22,32 +22,41 @@ public class TextWrangler : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		georgeTrigger = GameObject.Find("NPC").GetComponent<TriggerWriting> ().gTrigger;
+		georgeTrigger = GameObject.Find("NPC_George").GetComponent<GeorgeTrigger> ().Trigger;
 	
-		if (georgeTrigger) {
+		if (georgeTrigger) //all the character interacting for NPC named "George"
+		{
 			//textNum = GameObject.Find ("Texter").GetComponent<TypeWriter> (). textNum;
 			textNum = TypeWriter.textNum;
+			NPC = GameObject.Find("NPC_George").GetComponent<GeorgeTrigger> ().georgeTexture; //gets the Texture from the script dealing with George
 
-			if (textNum == 0) {
-				wholeText = "What are you doing Kevin?";
-				texture = texture1;
-			} else if (textNum == 1) {
-				wholeText = "I'm here to burn your house down!";
-				texture = texture2;
-			} else if (textNum == 2)
+			switch (textNum)//the conversation
 			{
-				wholeText = "Aww....";
-				texture = texture1;
+				case 0:
+					wholeText = "What are you doing Kevin?";
+					texture = NPC;
+					break;
+				case 1:
+					wholeText = "I'm here to burn your house down!";
+					texture = Player;
+					break;
+				case 2:
+					wholeText = "Aww....";
+					texture = NPC;
+					break;
+				case 3:
+					wholeText = " ";
+					texture = NPC;
+					break;
+				default: //true for every conversation
+					wholeText = "";
+					textNum = 0;
+					player.GetComponent<PlayerMovement> ().enabled = true;
+					texture = null;
+					break;
 			}
-			else
-			{
-				wholeText = "";
-				textNum = 0;
-				player.GetComponent<PlayerMovement> ().enabled = true;
-				texture = null;
-			}
-
-
 		}
+
+		//-----------------NEXT NPC CONVERSATION-------------------
 	}
 }

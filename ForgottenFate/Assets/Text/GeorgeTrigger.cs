@@ -1,20 +1,19 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class TriggerWriting : MonoBehaviour {
+public class GeorgeTrigger : MonoBehaviour {
 	
 	public string wholeText = "";
 
-	public bool gTrigger = false;
+	public bool Trigger = false; //contains the bool for the character
 
 	public GameObject Texter;
 
-	public Texture georgeTexture;
+	public Texture georgeTexture; //contains the texture for the character
 
 	// Use this for initialization
 	void Start () {
 		Texter.GetComponent<TypeWriter> ().enabled = false;
-		//Debug.Log (wholeText);
 	}
 	
 	// Update is called once per frame
@@ -24,11 +23,10 @@ public class TriggerWriting : MonoBehaviour {
 
 	void OnTriggerStay (Collider Cube)
 	{
-		if (Input.GetKeyDown ("e")) {
+		if (Input.GetKeyDown ("e"))
+		{
 			Texter.GetComponent<TypeWriter> ().enabled = true;
-			gTrigger = true;
-			wholeText = "One End";
-			Debug.Log (wholeText + "LOL");
+			Trigger = true;
 		}
 	}
 
@@ -36,7 +34,7 @@ public class TriggerWriting : MonoBehaviour {
 	{
 		wholeText = "";
 		TypeWriter.textNum = 0;
-		gTrigger = false;
+		Trigger = false;
 		Texter.GetComponent<TypeWriter> ().enabled = false;
 	}
 }
