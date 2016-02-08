@@ -6,6 +6,7 @@ public class TypeWriter : MonoBehaviour
 	private const float WAIT_TIME = 0.00001f;
 
 	private float waitTimer = 0.0f;
+	private float delay		=	0.0f;
 
 	public string wholeText = "";
 	public string otherText = "";
@@ -22,7 +23,6 @@ public class TypeWriter : MonoBehaviour
 	public Texture texture;
 
 	void Start(){
-		wholeText = "Still Pulling From TypeWriter";
 	}
 
 	void Update ()
@@ -31,6 +31,9 @@ public class TypeWriter : MonoBehaviour
 		{ 
 			buttonActivation = true;
 			isFinished = false;
+			textNum++;
+			Debug.Log (textNum + " Before");
+			//---------------Deactivate Movement-------------
 			player.GetComponent<PlayerMovement> ().enabled = false;
 			player.GetComponent<Rigidbody> ().velocity = Vector3.zero;
 
@@ -38,6 +41,12 @@ public class TypeWriter : MonoBehaviour
 
 		if (buttonActivation)
 		{
+			if (delay < .5)
+			{
+				delay += Time.deltaTime;
+				Debug.Log (delay + ": this is delay");
+			}
+
 			waitTimer += Time.deltaTime;
 			wholeText = GameObject.Find ("Texter").GetComponent<TextWrangler> ().wholeText;
 			
@@ -57,6 +66,7 @@ public class TypeWriter : MonoBehaviour
 				{
 					textNum++;
 					Debug.Log (textNum + " After");
+					//by peter
 				}
 			}
 		}
