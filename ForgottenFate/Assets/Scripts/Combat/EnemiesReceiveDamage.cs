@@ -80,10 +80,12 @@ public class EnemiesReceiveDamage : MonoBehaviour {
 				hitChance =2;
 				hit = true;
 				damageTaken = _player.GetComponent<CombatScript> ().playerDamage;
+
 				if (damageTaken > armor + 1)
-				damageTaken = damageTaken - armor;
+					damageTaken = damageTaken - armor;
 				else
-				damageTaken = 2;
+					damageTaken = 2;
+
 				damageTaken = Random.Range (damageTaken*0.7f, damageTaken);
 				damageTaken = -damageTaken;
 				criticalHit = Random.Range (0, 1.0f);
