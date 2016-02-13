@@ -49,7 +49,7 @@ public class EnemiesReceiveDamage : MonoBehaviour {
 		
 	}
 
-	void OnCollisionStay2D(Collision2D col)
+	void OnCollisionStay(Collision col)
 	{
 		//dealing damage to object
 		if (col.gameObject.tag != "PlayerMelee" && hit == false && _player.GetComponent<CombatScript> ().attackRate > 0)
