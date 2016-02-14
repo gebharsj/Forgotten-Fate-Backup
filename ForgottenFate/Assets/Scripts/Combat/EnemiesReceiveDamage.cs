@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine.UI;
 
 public class EnemiesReceiveDamage : MonoBehaviour {
+	public int enemyLvl;
 	public float maxHp;
 	float hp;
 	private bool hit = false;
@@ -21,6 +22,11 @@ public class EnemiesReceiveDamage : MonoBehaviour {
 	public Color32 endColor;
 	float hitChance;
 	public float criticalChance =0.03f;
+
+	//----exp-----
+	private float exp;
+	private int playerLvl = 1;
+	private float maxExp;
 
 
 	void Awake()
@@ -42,6 +48,20 @@ public class EnemiesReceiveDamage : MonoBehaviour {
 		if (hp <= 0) 
 		{
 			Destroy (gameObject);
+
+			exp += (enemyLvl * 10);
+
+			maxExp = 50 * (1) * playerLvl;
+
+			Debug.Log(maxExp);
+
+			if (exp > maxExp)
+			{
+				playerLvl ++;
+				exp = 0;
+				Debug.Log(playerLvl);
+			}
+
 		}
 
 		if (defense < 1)
