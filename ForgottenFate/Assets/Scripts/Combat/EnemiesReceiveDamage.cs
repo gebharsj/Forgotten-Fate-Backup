@@ -53,13 +53,18 @@ public class EnemiesReceiveDamage : MonoBehaviour {
 
 			maxExp = 50 * (1) * playerLvl;
 
-			Debug.Log(maxExp);
+			Debug.Log(maxExp + "MaxEXP");
+
+			Debug.Log(exp + " Current Exp");
 
 			if (exp > maxExp)
 			{
 				playerLvl ++;
+				//InitCBT("LEVEL UP").GetComponent<Animator>().SetTrigger("Miss");
 				exp = 0;
-				Debug.Log(playerLvl);
+				_player.GetComponent<CombatScript> ().playerDamage ++;
+				Debug.Log(playerLvl + "Player LEVEL");
+				Debug.Log(_player.GetComponent<CombatScript> ().playerDamage + "Damage");
 			}
 
 		}
@@ -91,7 +96,7 @@ public class EnemiesReceiveDamage : MonoBehaviour {
 			if (hitChance <=1 && (hitChance >= defDex_calc))
 			{
 				damageTaken = 0;
-				InitCBT("*miss").GetComponent<Animator>().SetTrigger("Miss");
+				InitCBT("*miss*").GetComponent<Animator>().SetTrigger("Miss");
 				hitChance =2;
 				hit = true;
 			}

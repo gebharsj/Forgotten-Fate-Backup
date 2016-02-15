@@ -47,7 +47,7 @@ public class CombatScript : MonoBehaviour
 		if (health == 0)
 		{
 			Destroy (gameObject);
-			//pay animation
+			//play animation
 			//play sound
 		}
 
