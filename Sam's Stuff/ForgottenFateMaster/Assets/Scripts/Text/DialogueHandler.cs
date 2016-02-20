@@ -5,12 +5,14 @@ using System.Collections;
 public class DialogueHandler : MonoBehaviour {      //to use, create an empty gameobject, and place this script, and fill in the dialogue, the target text box, and the target child if there is one
 
     public GameObject target;
+    [TextArea (2, 5)]
     public string[] dialogue;
     bool convoDone = false;
 
 	// Use this for initialization
 	void Start () {
         convoDone = GetComponent<ConversationScript>().convoDone;
+        GetComponent<ConversationScript>().conversation = dialogue;
 	}
 	
 	// Update is called once per frame

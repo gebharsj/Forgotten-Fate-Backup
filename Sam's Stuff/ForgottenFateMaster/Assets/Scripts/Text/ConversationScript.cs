@@ -4,7 +4,9 @@ using System.Collections;
 
 public class ConversationScript : MonoBehaviour {
 
-    string[] conversation;
+    //[HideInInspector]
+    public string[] conversation;
+    string[] temp;
     [HideInInspector]
     public string text;
     public Text textBox;
@@ -19,23 +21,30 @@ public class ConversationScript : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        conversation = GetComponent<DialogueHandler>().dialogue;
-        text = conversation[0];
         maxConvIndex = conversation.Length;
+        text = conversation[0];
         StartCoroutine(TypeWriter());
     }
 	
 	// Update is called once per frame
 	void Update () {
+        //if (convIndex == 0)
+        //{
+        //    maxConvIndex = conversation.Length;
+        //    text = conversation[0];
+        //}
         if (textDone && convIndex != maxConvIndex && ((Input.GetKeyDown("e")) || (Input.GetMouseButtonDown(0))))
         {
             text = conversation[convIndex];            
             textDone = false;
             StartCoroutine(TypeWriter());
         }
+
         if(convIndex == maxConvIndex)
         {
             convoDone = true;
+            convIndex = 0;
+            conversation = temp;
         }
     }
 
