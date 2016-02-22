@@ -8,6 +8,8 @@ public class AIBasic : MonoBehaviour {
 	public float enemyMovementSpeed;
 	public Transform fpsTarget;
 
+	bool	isNotTouching = true;
+
 	// Use this for initialization
 	void Start ()
 	{
@@ -20,36 +22,55 @@ public class AIBasic : MonoBehaviour {
 
 		if (fpsTargetDistance < attackDistance)
 		{
-			movingPhase();
+			MovingPhase();
 			Debug.Log ("ATTACK!");
 		}
 	}
 
-	void movingPhase()
+	void MovingPhase()
 	{
+		if (isNotTouching) 
+		{
+			if (fpsTarget.position.y > transform.position.y) 
+			{
+				transform.position += transform.up * enemyMovementSpeed * Time.deltaTime;
+				Debug.Log ("We;re going up!");
+			} 
+			else 
+			{
+				transform.position += transform.up * -enemyMovementSpeed * Time.deltaTime;
+				Debug.Log ("We;re going down!");
+			}
 
-		if (fpsTarget.position.y > transform.position.y) 
-		{
-			transform.position += transform.up * enemyMovementSpeed * Time.deltaTime;
-			Debug.Log ("We;re going up!");
-		} 
-		else 
-		{
-			transform.position += transform.up * -enemyMovementSpeed * Time.deltaTime;
-			Debug.Log ("We;re going down!");
-		}
 
-		if (fpsTarget.position.x > transform.position.x) 
-		{
-			transform.position += transform.right * enemyMovementSpeed * Time.deltaTime;
-			Debug.Log ("We;re going right!!");
-		} 
-		else 
-		{
-			transform.position += transform.right * -enemyMovementSpeed * Time.deltaTime;
-			Debug.Log ("We;re going left!");
+
+			if (fpsTarget.position.x > transform.position.x)
+			{
+				transform.position += transform.right * enemyMovementSpeed * Time.deltaTime;
+				Debug.Log ("We;re going right!!");
+			}
+			else 
+			{
+				transform.position += transform.right * -enemyMovementSpeed * Time.deltaTime;
+				Debug.Log ("We;re going left!");
+			}
 		}
 
 	}
+
+	void OnCollisionStay(Collision playerC)
+	{
+		if (playerC.gameObject.tag == "Player") 
+		{
+			isNotTouching = false;
+			Debug.Log ("HEHE they're touching");
+		}
+	}
+
+	void OnCollisionExit (Collision playerC)
+	{
+		isNotTouching = true;
+	}
+
 
 }
