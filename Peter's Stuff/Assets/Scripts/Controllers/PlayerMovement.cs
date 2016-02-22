@@ -47,11 +47,13 @@ public class PlayerMovement : MonoBehaviour {
 		
 		if (stamina <= 0) 
 			isSprinting = false;
-		
-		
-		player.velocity = new Vector3 (moveX, moveY, 0);
-		// Only when left mouse button is not clicked, will the WSAD controls work.) 
-		if (isSprinting == false) {
+
+
+        //player.velocity = new Vector3 (moveX, moveY, 0);
+
+        transform.Translate(moveX, moveY, 0f);
+        // Only when left mouse button is not clicked, will the WSAD controls work.) 
+        if (isSprinting == false) {
 			//WSAD control
 			moveX = Input.GetAxis ("Horizontal") * speed * Time.deltaTime;
 			moveY = Input.GetAxis ("Vertical") * speed * Time.deltaTime;
@@ -73,8 +75,7 @@ public class PlayerMovement : MonoBehaviour {
 			
 			//if staminaRecharge should happen to go above 5
 			if (staminaRecharge > 5)
-				staminaRecharge = 5; 
-			
+				staminaRecharge = 5; 			
 		}
 		
 		//stamina recovery
@@ -84,12 +85,9 @@ public class PlayerMovement : MonoBehaviour {
 			
 			//if stamina should happen to go above the max value
 			if (stamina > maxStamina)
-				stamina = maxStamina; 
-			
+				stamina = maxStamina; 			
 		}
-		
-		
-		
-		
-	}
+
+        
+    }
 }
