@@ -13,7 +13,7 @@ public class ConversationScript : MonoBehaviour {
     [HideInInspector]
     public int convIndex = 0;
     int maxConvIndex;
-    [HideInInspector]
+    //[HideInInspector]
     public bool convoDone = false;
 
     // Use this for initialization

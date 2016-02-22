@@ -27,13 +27,11 @@ public class EnemiesReceiveDamage : MonoBehaviour {
 
 	//----EXP Variables---------
 	public int enemyLevel 	=0;
-	public float exp =	0;
+	public float exp =	0f;
 	//private float playerLevel	= 1;
-	private float maxExp	= 0;
+	private float maxExp	= 0f;
 
 
-	
-	
 	void Awake()
 	{
 		hp = maxHp;
@@ -60,8 +58,8 @@ public class EnemiesReceiveDamage : MonoBehaviour {
 
 			Debug.Log (_player.GetComponent<CombatScript>().exp + " exp");
 
+			//maxExp = 100 * Mathf.Pow(2.00 , _player.GetComponent<CombatScript>(). playerLevel);
 			maxExp = 100 * _player.GetComponent<CombatScript>(). playerLevel;
-
 			Debug.Log (maxExp + " maxExp before level");
 
 			if (_player.GetComponent<CombatScript> ().exp >= maxExp)
@@ -80,8 +78,8 @@ public class EnemiesReceiveDamage : MonoBehaviour {
 		
 		if (_player.GetComponent<CombatScript> ().chargeDistance == 0)
 		{
-			rb.drag = 10000;
-			rb.mass = 50;
+			rb.drag = 10;
+			rb.mass = 5;
 		}
 		
 		if (hPTimer != 0) 
@@ -119,13 +117,11 @@ public class EnemiesReceiveDamage : MonoBehaviour {
 					defDex_calc = .05f;
 				_player.GetComponent<CombatScript> ().splash -= 1;
 				
-				Debug.Log (defDex_calc);
-				
 				//causing damage and estimating chances
 				
 				if (hitChance <= 1 && (hitChance >= defDex_calc)) {
 					damageTaken = 0;
-					InitCBT ("*miss").GetComponent<Animator> ().SetTrigger ("Miss");
+					InitCBT ("*miss*").GetComponent<Animator> ().SetTrigger ("Miss");
 					hitChance = 2;
 					hit = true;
 				}
@@ -194,9 +190,6 @@ public class EnemiesReceiveDamage : MonoBehaviour {
 		tempRect.transform.localPosition = CBTPrefab.transform.localPosition;
 		tempRect.transform.localScale = CBTPrefab.transform.localScale;
 		tempRect.transform.localRotation = CBTPrefab.transform.localRotation;
-		
-		Debug.Log (tempRect.transform.localPosition);
-		
 		temp.GetComponent<Text>().text = text;
 		Destroy(temp.gameObject, 3);
 		//temp.GetComponent<Animator>().SetTrigger("Hit");
