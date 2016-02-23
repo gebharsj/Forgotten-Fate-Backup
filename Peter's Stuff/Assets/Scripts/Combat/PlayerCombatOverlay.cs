@@ -18,9 +18,9 @@ public class PlayerCombatOverlay : MonoBehaviour {
 	public GameObject _player;
 
 	// Use this for initialization
-	void Start () {
+	//void Start () {
 	
-	}
+	//}
 	
 	// Update is called once per frame
 
@@ -44,7 +44,7 @@ public class PlayerCombatOverlay : MonoBehaviour {
 		print (myHealth + " Set Health Ratio");
 		//"myHealth" needs to be set between the values of 0 and 1: 1 being 100%.
 		healthBar.transform.localScale = new Vector3 (myHealth, healthBar.transform.localScale.y, healthBar.transform.localScale.z);
-		healthBar.color = Color.Lerp(endColor, startColorHealth, calculatorHealth);
+		//healthBar.color = Color.Lerp(endColor, startColorHealth, calculatorHealth);
 	}
 
 	public void SetMana(float myMana)
@@ -52,14 +52,14 @@ public class PlayerCombatOverlay : MonoBehaviour {
 		print (myMana + " Set Mana Ratio");
 		//"myHealth" needs to be set between the values of 0 and 1: 1 being 100%.
 		manaBar.transform.localScale = new Vector3 (myMana, manaBar.transform.localScale.y, manaBar.transform.localScale.z);
-		manaBar.color = Color.Lerp(endColor, startColorMana, calculatorMana);
+		//manaBar.color = Color.Lerp(startColorMana, endColor, calculatorMana);
 	}
 
 	public void SetExp(float myExp)
 	{
 		print (myExp + " Set Exp Ratio");
 		//"myHealth" needs to be set between the values of 0 and 1: 1 being 100%.
-		expBar.transform.localScale = new Vector3 (.95f, expBar.transform.localScale.y, expBar.transform.localScale.z);
-		expBar.color = Color.Lerp(endColor, startColorExp, calculatorExp);
+		expBar.transform.localScale = new Vector3 (myExp, expBar.transform.localScale.y, expBar.transform.localScale.z);
+		//expBar.color = Color.Lerp(endColor, startColorExp, calculatorExp);fds
 	}
 }
