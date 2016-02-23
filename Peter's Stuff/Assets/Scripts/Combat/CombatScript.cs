@@ -10,7 +10,8 @@ public class CombatScript : MonoBehaviour
 	public GameObject right;
 	public float maxMana;
 	public float manaRecovery = 0.03f;
-	private float mana;
+	[HideInInspector]
+	public float mana;
 	public float normalDamage = 3;
 	[HideInInspector]
 	public float playerDamage = 3;
@@ -21,7 +22,8 @@ public class CombatScript : MonoBehaviour
 	public float meleeRange = 0.8f;
 	public float meleeAdjustment = 0.5f;
 	public int maxHealth = 65;
-	float health;
+	[HideInInspector]
+	public float health;
 	public float criticalChance = 0.03f;
 	private float chargeMultiplier = 10.0f;
 	[HideInInspector]
@@ -33,8 +35,9 @@ public class CombatScript : MonoBehaviour
 
 	//----------EXP--------
 	[HideInInspector]
-	public float exp;
+	public float exp = 0;
 	public int playerLevel = 1;
+	public float maxExp	= 0f;
 
 	
 	void Awake()

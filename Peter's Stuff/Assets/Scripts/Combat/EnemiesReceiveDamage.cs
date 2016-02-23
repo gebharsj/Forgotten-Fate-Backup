@@ -43,13 +43,15 @@ public class EnemiesReceiveDamage : MonoBehaviour {
 	{
 		
 		rb = GetComponent<Rigidbody>();
+		_player.GetComponent<CombatScript>(). maxExp = 100 * _player.GetComponent<CombatScript>(). playerLevel; //so maxExp =/= 0
 		
 	}
 	
 	// Update is called once per frame
 	void Update () 
 	{
-		
+		_player.GetComponent<CombatScript>(). maxExp = 100 * _player.GetComponent<CombatScript>(). playerLevel;//updates so MaxExp
+
 		if (hp <= 0) 
 		{
 			Destroy (gameObject);
@@ -59,16 +61,15 @@ public class EnemiesReceiveDamage : MonoBehaviour {
 			Debug.Log (_player.GetComponent<CombatScript>().exp + " exp");
 
 			//maxExp = 100 * Mathf.Pow(2.00 , _player.GetComponent<CombatScript>(). playerLevel);
-			maxExp = 100 * _player.GetComponent<CombatScript>(). playerLevel;
 			Debug.Log (maxExp + " maxExp before level");
 
-			if (_player.GetComponent<CombatScript> ().exp >= maxExp)
+			if (_player.GetComponent<CombatScript> ().exp >= _player.GetComponent<CombatScript>().maxExp)
 			{
 				_player.GetComponent<CombatScript> (). playerLevel ++;
 				//InitCBT ("Level Up").GetComponent<Animator> ().SetTrigger ("Level Up");
 				_player.GetComponent<CombatScript> (). exp = _player.GetComponent<CombatScript>(). exp - maxExp;
 				_player.GetComponent<CombatScript> (). normalDamage++;
-				Debug.Log (exp + " exp after level");
+				Debug.Log (_player.GetComponent<CombatScript> ().exp + " exp after level");
 				Debug.Log (_player.GetComponent<CombatScript> (). playerLevel + "PLAYER LEVEL");
 				Debug.Log (_player.GetComponent<CombatScript> ().normalDamage + " damage");
 			}
@@ -93,10 +94,7 @@ public class EnemiesReceiveDamage : MonoBehaviour {
 				hPTimer = 0;
 				hPBar.SetActive(false);
 			}
-			
-			
 		}
-		
 	}
 	
 	void OnTriggerStay(Collider col)
@@ -199,11 +197,11 @@ public class EnemiesReceiveDamage : MonoBehaviour {
 	
 	public void SetHealth (float myHealth)
 	{
+		print (myHealth + " Enemy Health Percent");
 		//"myHealth" needs to be set between the values of 0 and 1: 1 being 100%.
 		healthBar.transform.localScale = new Vector3 (myHealth, healthBar.transform.localScale.y, healthBar.transform.localScale.z);
 		healthBar.color = Color.Lerp(endColor, startColor, calculator);
 	}
-	
 	
 	
 }

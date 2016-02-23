@@ -5,10 +5,10 @@ public class ChasingAI : MonoBehaviour {
 	
 	public Transform goal;
 	//public GameObject enemy;
-	public Vector3 enemyLocation;
+	private Vector3 enemyLocation;
 	private Quaternion rotation = new Quaternion(0,0,0,0);
 
-	public bool isNotTouching = true;
+	private bool isNotTouching = true;
 
 	// Use this for initialization
 	void Start () 
