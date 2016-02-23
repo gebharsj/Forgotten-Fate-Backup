@@ -7,13 +7,17 @@ public class TriggerText : MonoBehaviour {
     public GameObject player;
     public GameObject canvas;
     public Text text;
-    public GameObject target = null;
-    [TextArea(2, 5)]
+    public GameObject target;
+    
     public string[] dialogue;
+    string[] temp;
+
+    public GameObject[] targetArray;
+    public int index = 0;
 
     void Start()
-    {        
-        
+    {
+                
     }
 
     // Update is called once per frame
@@ -25,31 +29,44 @@ public class TriggerText : MonoBehaviour {
     void OnTriggerStay(Collider col)
     {
         Debug.Log(gameObject);
-        if (text.GetComponent<ConversationScript>().convoDone == false && Input.GetKeyDown("e"))                                                 //this activates when the player enters the collider and presses e
+        Debug.Log(target);
+
+        if (index >= targetArray.Length)
         {
-            text.GetComponent<ConversationScript>().conversation = dialogue;
-            canvas.SetActive(true);
-            player.GetComponent<PlayerMovement>().enabled = false;
-            player.GetComponent<Rigidbody>().velocity = Vector3.zero;            
-        }
-        else if (text.GetComponent<ConversationScript>().convoDone && (Input.GetKeyDown("e") || (Input.GetMouseButtonDown(0))))      //this runs when the dialogue is done
-        {
-            //this.gameObject.GetComponent<TriggerText>().enabled = false;
             canvas.SetActive(false);
-            text.GetComponent<ConversationScript>().convIndex = 0;
-            player.GetComponent<PlayerMovement>().enabled = true;
-        } 
+        }
+        else
+        {
+            if (ConversationScript.convoDone == false && Input.GetKeyDown("e"))                                                 //this activates when the player enters the collider and presses e
+            {
+                ConversationScript.conversation = dialogue;
+                canvas.SetActive(true);
+                player.GetComponent<PlayerMovement>().enabled = false;
+                player.GetComponent<Rigidbody>().velocity = Vector3.zero;
+            }
+            else if (ConversationScript.convoDone && (Input.GetKeyDown("e") || (Input.GetMouseButtonDown(0))))      //this runs when the dialogue is done
+            {
+                canvas.SetActive(false);
+                text.GetComponent<ConversationScript>().convIndex = 0;
+                player.GetComponent<PlayerMovement>().enabled = true;
+            }
+        }
+    }
+
+    void OnTriggerEnter(Collider col)
+    {
+        if (index <= targetArray.Length)
+        {
+            target = targetArray[index];
+            dialogue = target.GetComponent<DialogueHandler>().dialogue;
+            temp = new string[dialogue.Length];
+        }
     }
 
     void OnTriggerExit(Collider col)
     {
-        if (target != null)
-        {
-            if (text.GetComponent<ConversationScript>().convoDone)
-            {
-                target.SetActive(true);
-                this.gameObject.GetComponent<BoxCollider>().enabled = false;
-            }
-        }
+        index = index + 1;
+        dialogue = temp;        
+        ConversationScript.convoDone = false;
     }
 }

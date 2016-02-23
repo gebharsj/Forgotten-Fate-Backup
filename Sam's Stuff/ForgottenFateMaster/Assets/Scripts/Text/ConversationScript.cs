@@ -5,8 +5,7 @@ using System.Collections;
 public class ConversationScript : MonoBehaviour {
 
     //[HideInInspector]
-    public string[] conversation;
-    string[] temp;
+    public static string[] conversation;
     [HideInInspector]
     public string text;
     public Text textBox;
@@ -17,7 +16,7 @@ public class ConversationScript : MonoBehaviour {
     public int convIndex = 0;
     int maxConvIndex;
     [HideInInspector]
-    public bool convoDone = false;
+    public static bool convoDone = false;
 
     // Use this for initialization
     void Start () {
@@ -28,11 +27,6 @@ public class ConversationScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        //if (convIndex == 0)
-        //{
-        //    maxConvIndex = conversation.Length;
-        //    text = conversation[0];
-        //}
         if (textDone && convIndex != maxConvIndex && ((Input.GetKeyDown("e")) || (Input.GetMouseButtonDown(0))))
         {
             text = conversation[convIndex];            
@@ -43,8 +37,7 @@ public class ConversationScript : MonoBehaviour {
         if(convIndex == maxConvIndex)
         {
             convoDone = true;
-            convIndex = 0;
-            conversation = temp;
+            convIndex = 0;            
         }
     }
 
