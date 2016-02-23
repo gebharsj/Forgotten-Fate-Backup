@@ -11,6 +11,7 @@ public class TriggerText : MonoBehaviour {
     
     public string[] dialogue;
     string[] temp;
+    int dialogueLength;
 
     public GameObject[] targetArray;
     public int index = 0;

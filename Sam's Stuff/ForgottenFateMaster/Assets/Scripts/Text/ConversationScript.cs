@@ -14,19 +14,20 @@ public class ConversationScript : MonoBehaviour {
     bool textDone = false;
     [HideInInspector]
     public int convIndex = 0;
-    int maxConvIndex;
+    public int maxConvIndex;
     [HideInInspector]
     public static bool convoDone = false;
 
     // Use this for initialization
     void Start () {
-        maxConvIndex = conversation.Length;
+        
         text = conversation[0];
         StartCoroutine(TypeWriter());
     }
 	
 	// Update is called once per frame
 	void Update () {
+        maxConvIndex = conversation.Length;
         if (textDone && convIndex != maxConvIndex && ((Input.GetKeyDown("e")) || (Input.GetMouseButtonDown(0))))
         {
             text = conversation[convIndex];            
