@@ -17,6 +17,7 @@ public class ConversationScript : MonoBehaviour {
     public int maxConvIndex;
     [HideInInspector]
     public static bool convoDone = false;
+    public AudioSource sound;
 
     // Use this for initialization
     void Start () {
@@ -47,6 +48,7 @@ public class ConversationScript : MonoBehaviour {
         for (int i = 0; i <= text.Length; i++ )
         {
             textBox.text = text.Substring(0, i);
+            sound.Play();
             yield return new WaitForSeconds(writeSpeed);
         }
         convIndex++;
