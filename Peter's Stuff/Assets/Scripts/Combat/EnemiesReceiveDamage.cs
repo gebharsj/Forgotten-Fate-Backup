@@ -65,6 +65,7 @@ public class EnemiesReceiveDamage : MonoBehaviour {
 			if (_player.GetComponent<CombatScript> ().exp >= maxExp)
 			{
 				_player.GetComponent<CombatScript> (). playerLevel ++;
+				//InitCBT ("Level Up").GetComponent<Animator> ().SetTrigger ("Level Up");
 				_player.GetComponent<CombatScript> (). exp = _player.GetComponent<CombatScript>(). exp - maxExp;
 				_player.GetComponent<CombatScript> (). normalDamage++;
 				Debug.Log (exp + " exp after level");
