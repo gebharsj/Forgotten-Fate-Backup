@@ -3,56 +3,133 @@ using System.Collections;
 
 public class AIBasic : MonoBehaviour {
 
-	public float fpsTargetDistance;
+	[HideInInspector]
+	public float targetDistance;
 	public float attackDistance;
+
 	public float enemyMovementSpeed;
-	public Transform fpsTarget;
+	[HideInInspector]
+	public float slowMovementSpeed;
+	[HideInInspector]
+	public float fastMovementSpeed;
+
+	public Transform target;
+
+	public GameObject _player;
+
+	private int	random;
+
+	private float 	fleeHealth;
 
 	bool	isNotTouching = true;
+	bool	noDamage 	= true;
+	bool	runAway 	= false;
+	bool	stayFight	= true;
 
 	// Use this for initialization
 	void Start ()
 	{
+		fastMovementSpeed = enemyMovementSpeed * 2.0f;
+		slowMovementSpeed = enemyMovementSpeed;
 
+		fleeHealth = this.gameObject.GetComponent<EnemiesReceiveDamage> ().maxHp * .2f;
 	}
 	// Update is called once per frame
 	void Update ()
 	{
-		fpsTargetDistance = Vector3.Distance (fpsTarget.position, transform.position);
+		targetDistance = Vector3.Distance (target.position, transform.position);
 
-		if (fpsTargetDistance < attackDistance)
+		//-------Speed Changes Based Upon Distance------------
+		if (targetDistance > attackDistance / 2) {
+			enemyMovementSpeed = fastMovementSpeed;
+		} else
+			enemyMovementSpeed = slowMovementSpeed;
+
+		//--------If Hit, always Chances------------
+		if (noDamage) 
+		{
+			if (this.gameObject.GetComponent<EnemiesReceiveDamage> ().hp < this.gameObject.GetComponent<EnemiesReceiveDamage> ().maxHp) 
+			{
+				attackDistance = 1000;
+				noDamage = false;
+				print ("I;ve Been Hit!");
+			}
+		}
+
+		//-------------Random Chance of Fleeing-------
+		if (stayFight) 
+		{
+			if (this.gameObject.GetComponent<EnemiesReceiveDamage> ().hp < fleeHealth)
+			{
+				stayFight = false;
+				random = Random.Range (1, 5);
+				print (random + ": Random Number");
+
+				if (random ==1)
+				{
+					runAway = true;
+				}
+			}
+		}
+
+		//------Moves Towards the Player-------------
+		if (targetDistance < attackDistance)
 		{
 			MovingPhase();
-			Debug.Log ("ATTACK!");
+			//Debug.Log ("ATTACK!");
 		}
 	}
 
 	void MovingPhase()
 	{
-		if (isNotTouching) 
+		if (runAway) 
 		{
-			if (fpsTarget.position.y > transform.position.y) 
+			print ("RUN AWAY!");
+			//---------Opposite of isNotTouching------------
+			if (target.position.y > transform.position.y) 
+			{
+				transform.position += transform.up * -enemyMovementSpeed * Time.deltaTime;
+				//Debug.Log ("We;re going up!");
+			} 
+			else 
 			{
 				transform.position += transform.up * enemyMovementSpeed * Time.deltaTime;
-				Debug.Log ("We;re going up!");
+				//Debug.Log ("We;re going down!");
+			}
+			
+			if (target.position.x > transform.position.x)
+			{
+				transform.position += transform.right * -enemyMovementSpeed * Time.deltaTime;
+				//Debug.Log ("We;re going right!!");
+			} 
+			else 
+			{
+				transform.position += transform.right * enemyMovementSpeed * Time.deltaTime;
+				//Debug.Log ("We;re going left!");
+			}
+		}
+		else if (isNotTouching) 
+		{
+			if (target.position.y > transform.position.y) 
+			{
+				transform.position += transform.up * enemyMovementSpeed * Time.deltaTime;
+				//Debug.Log ("We;re going up!");
 			} 
 			else 
 			{
 				transform.position += transform.up * -enemyMovementSpeed * Time.deltaTime;
-				Debug.Log ("We;re going down!");
+				//Debug.Log ("We;re going down!");
 			}
-
-
-
-			if (fpsTarget.position.x > transform.position.x)
+			
+			if (target.position.x > transform.position.x)
 			{
 				transform.position += transform.right * enemyMovementSpeed * Time.deltaTime;
-				Debug.Log ("We;re going right!!");
-			}
+				//Debug.Log ("We;re going right!!");
+			} 
 			else 
 			{
 				transform.position += transform.right * -enemyMovementSpeed * Time.deltaTime;
-				Debug.Log ("We;re going left!");
+				//Debug.Log ("We;re going left!");
 			}
 		}
 
@@ -63,7 +140,9 @@ public class AIBasic : MonoBehaviour {
 		if (playerC.gameObject.tag == "Player") 
 		{
 			isNotTouching = false;
-			Debug.Log ("HEHE they're touching");
+			_player.GetComponent<PlayerReceivesDamage>().meleeHits++;
+			//print (_player.GetComponent<PlayerReceivesDamage>().meleeHits + " Melee Hits");
+			//Debug.Log ("HEHE they're touching");
 		}
 	}
 

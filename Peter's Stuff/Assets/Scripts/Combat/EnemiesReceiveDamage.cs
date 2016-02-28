@@ -4,7 +4,10 @@ using UnityEngine.UI;
 
 public class EnemiesReceiveDamage : MonoBehaviour {
 	public float maxHp;
-	float hp;
+	//----Changed to Public Float-------
+	[HideInInspector]
+	public float hp;
+	//-------------------------------\\
 	private bool hit = false;
 	public GameObject _player;
 	private float damageTaken;
@@ -30,6 +33,9 @@ public class EnemiesReceiveDamage : MonoBehaviour {
 	public float exp =	0f;
 	//private float playerLevel	= 1;
 	//private float maxExp	= 0f;
+
+	//---bool for AIBasics---
+
 
 
 	void Awake()
@@ -197,7 +203,7 @@ public class EnemiesReceiveDamage : MonoBehaviour {
 	
 	public void SetHealth (float myHealth)
 	{
-		print (myHealth + " Enemy Health Percent");
+		//print (myHealth + " Enemy Health Percent");
 		//"myHealth" needs to be set between the values of 0 and 1: 1 being 100%.
 		healthBar.transform.localScale = new Vector3 (myHealth, healthBar.transform.localScale.y, healthBar.transform.localScale.z);
 		healthBar.color = Color.Lerp(endColor, startColor, calculator);
