@@ -38,10 +38,13 @@ public class ConversationScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         maxConvIndex = conversation.Length;
-        Debug.Log(useButtons);
+        //Debug.Log(useButtons);
         Debug.Log(convIndex);
 
-        if (textDone && convIndex != maxConvIndex && (Input.GetKeyDown("e") || buttonClicked == true) )
+        Debug.Log(button1.GetComponent<ButtonHandler>().buttonClicked);
+        Debug.Log(button2.GetComponent<ButtonHandler>().buttonClicked);
+
+        if (textDone && convIndex != maxConvIndex && (Input.GetKeyDown("e") || (button1.GetComponent<ButtonHandler>().buttonClicked || button2.GetComponent<ButtonHandler>().buttonClicked)))
         {            
             text = conversation[convIndex];            
             textDone = false;
@@ -61,10 +64,15 @@ public class ConversationScript : MonoBehaviour {
                 button2.SetActive(false);
             }
 
-            buttonClicked = false;
-            //button1.SetActive(false);
-            //button2.SetActive(false);
-            //useButtons = false;
+            if (button1.GetComponent<ButtonHandler>().buttonClicked)
+            {
+                convIndex = button1.GetComponent<ButtonHandler>().skipToIndex;
+                convIndex--;
+            }
+
+            button1.GetComponent<ButtonHandler>().buttonClicked = false;
+            button2.GetComponent<ButtonHandler>().buttonClicked = false;
+            
         }
 
         if(convIndex == maxConvIndex)

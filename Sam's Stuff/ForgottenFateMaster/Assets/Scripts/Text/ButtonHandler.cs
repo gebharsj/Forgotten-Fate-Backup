@@ -6,7 +6,7 @@ public class ButtonHandler : MonoBehaviour {
 
     public Text textBox;
     public int targetIndex;
-    public int skipIndex;
+    public int skipToIndex;
     public bool buttonClicked;
 
 	// Use this for initialization
@@ -24,6 +24,6 @@ public class ButtonHandler : MonoBehaviour {
     {
         Debug.Log("target index " + targetIndex);
         ConversationScript.convIndex = targetIndex;
-        //buttonClicked = true;
+        buttonClicked = true;
     }
 }
