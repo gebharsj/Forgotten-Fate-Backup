@@ -25,21 +25,35 @@ public class CameraZoom : MonoBehaviour
 	void Update () 
 	{
 		//camera follow
-		transform.position = Vector3.Lerp(transform.position, new Vector3(target.position.x, target.position.y, transform.position.z), Time.deltaTime * cameraSpeed);
+		transform.position = Vector3.Lerp (transform.position, new Vector3 (target.position.x, target.position.y, transform.position.z), Time.deltaTime * cameraSpeed);
+		distance = Vector3.Distance (this.gameObject.transform.position, _player.transform.position);
 		
-		distance = Vector3.Distance(this.gameObject.transform.position, _player.transform.position);
-		
-		if (distance < cameraRange) 
+		if (_player.GetComponent<CombatScript> ().melee == true)
 		{
-			GetComponent<Camera> ().fieldOfView = Mathf.Lerp (GetComponent<Camera> ().fieldOfView, normal, Time.deltaTime * smooth);
-			cameraSpeed = 1.5f;
+			if (distance < cameraRange) 
+			{
+				GetComponent<Camera> ().fieldOfView = Mathf.Lerp (GetComponent<Camera> ().fieldOfView, normal, Time.deltaTime * smooth);
+				cameraSpeed = 1.5f;
+			}
+		}
+		else
+			{
+				if (distance < cameraRange)
+				{
+					GetComponent<Camera> ().fieldOfView = Mathf.Lerp (GetComponent<Camera> ().fieldOfView, normal * 1.5f, Time.deltaTime * smooth);
+					cameraSpeed = 1.5f;
+			    }
+			}
 
-		}
-		if (distance > cameraRange) 
-		{
-			GetComponent<Camera>().fieldOfView = Mathf.Lerp(GetComponent<Camera>().fieldOfView,zoom,Time.deltaTime*smooth);
-			if (distance > cameraRange + 1)
-				cameraSpeed = 3.0f;
-		}
+
+			
+			if (distance > cameraRange) 
+			{
+				GetComponent<Camera> ().fieldOfView = Mathf.Lerp (GetComponent<Camera> ().fieldOfView, zoom, Time.deltaTime * smooth);
+				if (distance > cameraRange + 1)
+					cameraSpeed = 3.0f;
+			}
 	}
+		
+
 }
