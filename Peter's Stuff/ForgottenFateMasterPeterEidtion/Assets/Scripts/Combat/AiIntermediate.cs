@@ -1,26 +1,33 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class AIBasic2 : MonoBehaviour {
+public class AiIntermediate : MonoBehaviour {
 
 	[HideInInspector]
 	public float targetDistance;
 	public float attackDistance;
+
+	public float sprintDistance;
 	
-	public float enemyMovementSpeed;
+	public float normalMovementSpeed;
+	public float sprintMovementSpeed;
 	[HideInInspector]
 	public float slowMovementSpeed;
 	[HideInInspector]
 	public float fastMovementSpeed;
 	
+	private int	random;
+	public float attackTimer;
+	private float permentTimer;
+
+	//private int		fleeNumber;
+	//public 	int		fleePercent;
+	public 	float 	fleeHealthPercent;
+	private float 	fleeHealth;
+
 	public Transform target;
 	
 	public GameObject _player;
-	
-	private int	random;
-	public int attackTimer;
-	
-	private float 	fleeHealth;
 	
 	bool	isNotTouching = true;
 	bool	noDamage 	= true;
@@ -30,23 +37,32 @@ public class AIBasic2 : MonoBehaviour {
 	// Use this for initialization
 	void Start ()
 	{
-		fastMovementSpeed = enemyMovementSpeed * 2.0f;
-		slowMovementSpeed = enemyMovementSpeed;
-		
-		fleeHealth = this.gameObject.GetComponent<EnemiesReceiveDamage> ().maxHp * .2f;
+		fastMovementSpeed = sprintMovementSpeed;
+		slowMovementSpeed = normalMovementSpeed;
+
+		permentTimer = attackTimer;
+
+		fleeHealth = this.gameObject.GetComponent<EnemiesReceiveDamage> ().maxHp * fleeHealthPercent / 100;
 	}
+
 	// Update is called once per frame
 	void Update ()
 	{
+		if (attackTimer > 0) 
+		{
+			//print (attackTimer + " : AttackTimer");
+			attackTimer -= 1 * Time.deltaTime;
+		}
+
 		targetDistance = Vector3.Distance (target.position, transform.position);
 
 		//-------Speed Changes Based Upon Distance------------
-		if (targetDistance > attackDistance / 2)
+		if (targetDistance > sprintDistance)
 		{
-			enemyMovementSpeed = fastMovementSpeed;
+			normalMovementSpeed = fastMovementSpeed;
 		} 
 		else
-			enemyMovementSpeed = slowMovementSpeed;
+			normalMovementSpeed = slowMovementSpeed;
 
 		//--------If Hit, always Chances------------
 		if (noDamage) 
@@ -55,20 +71,24 @@ public class AIBasic2 : MonoBehaviour {
 			{
 				attackDistance = 1000;
 				noDamage = false;
-				print ("I;ve Been Hit!");
+				//print ("I've Been Hit!");
 			}
 		}
 
 		//-------------Random Chance of Fleeing-------
 		if (stayFight)
 		{
+			random = 0;
 			if (this.gameObject.GetComponent<EnemiesReceiveDamage> ().hp < fleeHealth)
 			{
-				stayFight = false;
-				random = Random.Range (1, 5);
+				//fleeNumber = 1 * 100 / fleePercent;
+				stayFight = false; //this is here CHRIS
+				random = Random.Range (1, 5);//fleeNumber);
+				//print (fleeNumber + ": Flee Int");
 				print (random + ": Random Number");
 				
-				if (random == 1) {
+				if (random == 1) 
+				{
 					runAway = true;
 				}
 			}
@@ -83,24 +103,23 @@ public class AIBasic2 : MonoBehaviour {
 
 	void MovingPhase()
 	{
-		
 		if (runAway) 
 		{
 			print ("RUN AWAY!");
 			//---------Opposite of isNotTouching------------
 			if (target.position.y > transform.position.y) {
-				transform.position += transform.up * -enemyMovementSpeed * Time.deltaTime;
+				transform.position += transform.up * -normalMovementSpeed * Time.deltaTime;
 				//Debug.Log ("We;re going up!");
 			} else {
-				transform.position += transform.up * enemyMovementSpeed * Time.deltaTime;
+				transform.position += transform.up * normalMovementSpeed * Time.deltaTime;
 				//Debug.Log ("We;re going down!");
 			}
 			
 			if (target.position.x > transform.position.x) {
-				transform.position += transform.right * -enemyMovementSpeed * Time.deltaTime;
+				transform.position += transform.right * -normalMovementSpeed * Time.deltaTime;
 				//Debug.Log ("We;re going right!!");
 			} else {
-				transform.position += transform.right * enemyMovementSpeed * Time.deltaTime;
+				transform.position += transform.right * normalMovementSpeed * Time.deltaTime;
 				//Debug.Log ("We;re going left!");
 			}
 		}
@@ -109,20 +128,20 @@ public class AIBasic2 : MonoBehaviour {
 		{
 			if (target.position.y > transform.position.y) 
 			{
-				transform.position += transform.up * enemyMovementSpeed * Time.deltaTime;
+				transform.position += transform.up * normalMovementSpeed * Time.deltaTime;
 			} 
 			else 
 			{
-				transform.position += transform.up * -enemyMovementSpeed * Time.deltaTime;
+				transform.position += transform.up * -normalMovementSpeed * Time.deltaTime;
 			}
 
 			if (target.position.x > transform.position.x)
 			{
-				transform.position += transform.right * enemyMovementSpeed * Time.deltaTime;
+				transform.position += transform.right * normalMovementSpeed * Time.deltaTime;
 			}
 			else 
 			{
-				transform.position += transform.right * -enemyMovementSpeed * Time.deltaTime;
+				transform.position += transform.right * -normalMovementSpeed * Time.deltaTime;
 			}
 		}
 	}
@@ -132,20 +151,17 @@ public class AIBasic2 : MonoBehaviour {
 		if (playerC.gameObject.tag == "Player") 
 		{
 			isNotTouching = false;
-			StartCoroutine(AttackingImpulse());
-            //target.GetComponent<PlayerReceivesDamage>().meleeHits++;
+			//StartCoroutine(AttackingImpulse());
+			if (attackTimer < 1)
+			{
+            	target.GetComponent<PlayerReceivesDamage>().meleeHits++;
+				attackTimer = permentTimer;
+			}
 		}
 	}
 
 	void OnCollisionExit2D (Collision2D playerC)
 	{
 		isNotTouching = true;
-	}
-
-	IEnumerator AttackingImpulse()
-	{
-		print ("In the IEnumerator");
-		yield return new WaitForSeconds(attackTimer);
-		target.GetComponent<PlayerReceivesDamage>().meleeHits = 1;
 	}
 }

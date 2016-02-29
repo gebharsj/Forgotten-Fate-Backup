@@ -55,12 +55,18 @@ public class PlayerCombatOverlay : MonoBehaviour {
 
 		//--------------Convert Numbers to String-----------------
 		placeHolder = _player.GetComponent<CombatScript> ().health;
+		placeHolder = placeHolder * 10;
+		placeHolder = Mathf.Round(placeHolder);
+		placeHolder = placeHolder / 10;
 		healthCurrent = placeHolder.ToString ();
 
 		placeHolder = _player.GetComponent<CombatScript> ().maxHealth;
 		healthMax = placeHolder.ToString ();
 
 		placeHolder = _player.GetComponent<CombatScript> ().mana;
+		placeHolder = placeHolder * 10;
+		placeHolder = Mathf.Round(placeHolder);
+		placeHolder = placeHolder / 10;
 		manaCurrent = placeHolder.ToString ();
 
 		placeHolder = _player.GetComponent<CombatScript> ().maxMana;
