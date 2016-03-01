@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class EnemiesReceiveDamage : MonoBehaviour {
 	public float maxHp;
-	float hp;
+	public float hp;
 	private bool hit = false;
 	public GameObject _player;
 	private float damageTaken;
@@ -30,9 +30,10 @@ public class EnemiesReceiveDamage : MonoBehaviour {
 
     //----EXP Variables---------
     public int enemyLevel = 0;
+    [HideInInspector]
     public float exp = 0f;
     //private float playerLevel	= 1;
-    private float maxExp = 0f;
+    //private float maxExp = 0f;
 
 
     void Awake()
@@ -46,7 +47,7 @@ public class EnemiesReceiveDamage : MonoBehaviour {
 	{
 		
 		rb = GetComponent<Rigidbody2D>();
-		
+        _player.GetComponent<CombatScript>().maxExp = 100 * _player.GetComponent<CombatScript>().playerLevel; //so maxExp =/= 0
 	}
 	
 	// Update is called once per frame
@@ -91,20 +92,20 @@ public class EnemiesReceiveDamage : MonoBehaviour {
 
             _player.GetComponent<CombatScript>().exp += (enemyLevel * 10);
 
-            Debug.Log(_player.GetComponent<CombatScript>().exp + " exp");
+           // Debug.Log(_player.GetComponent<CombatScript>().exp + " exp");
 
             //maxExp = 100 * Mathf.Pow(2.00 , _player.GetComponent<CombatScript>(). playerLevel);
-            maxExp = 100 * _player.GetComponent<CombatScript>().playerLevel;
-            Debug.Log(maxExp + " maxExp before level");
+            _player.GetComponent<CombatScript>().maxExp = 100 * _player.GetComponent<CombatScript>().playerLevel;
+           //Debug.Log(_player.GetComponent<CombatScript>().maxExp + " maxExp before level");
 
-            if (_player.GetComponent<CombatScript>().exp >= maxExp)
+            if (_player.GetComponent<CombatScript>().exp >= _player.GetComponent<CombatScript>().maxExp)
             {
                 _player.GetComponent<CombatScript>().playerLevel++;
-                _player.GetComponent<CombatScript>().exp = _player.GetComponent<CombatScript>().exp - maxExp;
+                _player.GetComponent<CombatScript>().exp = _player.GetComponent<CombatScript>().exp - _player.GetComponent<CombatScript>().maxExp;
                 _player.GetComponent<CombatScript>().normalDamage++;
-                Debug.Log(exp + " exp after level");
-                Debug.Log(_player.GetComponent<CombatScript>().playerLevel + "PLAYER LEVEL");
-                Debug.Log(_player.GetComponent<CombatScript>().normalDamage + " damage");
+                //Debug.Log(exp + " exp after level");
+                //Debug.Log(_player.GetComponent<CombatScript>().playerLevel + "PLAYER LEVEL");
+                //Debug.Log(_player.GetComponent<CombatScript>().normalDamage + " damage");
             }
         }
 		//defense cannot be below 1 or else there will be a glitch
@@ -126,7 +127,7 @@ public class EnemiesReceiveDamage : MonoBehaviour {
 		{
 			hPTimer = 3;
 			hPBar.SetActive(true);
-			hp -= _player.GetComponent<CombatScript> ().fireDamage * Time.deltaTime;
+			hp -= _player.GetComponent<CombatScript> ().fireDamage * 0.15f;
 			calculator = hp / maxHp;
 			SetHealth (calculator);
 			burning = 3;
@@ -249,7 +250,8 @@ public class EnemiesReceiveDamage : MonoBehaviour {
             {
 				Destroy(ar.gameObject);
                 hitChance = 2;
-                damageTaken = _player.GetComponent<CombatScript>().playerDamage;
+                //damageTaken = _player.GetComponent<CombatScript>().playerDamage;
+                damageTaken = ar.GetComponent<ArrowScript>().myDMG;
                 if (damageTaken > armor + 1)
                     damageTaken = damageTaken - armor;
                 else

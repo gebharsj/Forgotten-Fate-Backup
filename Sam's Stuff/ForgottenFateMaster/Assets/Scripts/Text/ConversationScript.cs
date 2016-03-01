@@ -39,10 +39,10 @@ public class ConversationScript : MonoBehaviour {
 	void Update () {
         maxConvIndex = conversation.Length;
         //Debug.Log(useButtons);
-        Debug.Log(convIndex);
+        //Debug.Log(convIndex);
 
-        Debug.Log(button1.GetComponent<ButtonHandler>().buttonClicked);
-        Debug.Log(button2.GetComponent<ButtonHandler>().buttonClicked);
+        //Debug.Log(button1.GetComponent<ButtonHandler>().buttonClicked);
+        //Debug.Log(button2.GetComponent<ButtonHandler>().buttonClicked);
 
         if (textDone && convIndex != maxConvIndex && (Input.GetKeyDown("e") || (button1.GetComponent<ButtonHandler>().buttonClicked || button2.GetComponent<ButtonHandler>().buttonClicked)))
         {            

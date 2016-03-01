@@ -12,6 +12,6 @@ public class PetFollow : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        transform.position = Vector3.Lerp(transform.position, new Vector3(target.position.x, target.position.y, transform.position.z), Time.deltaTime * 5f);
+        transform.position = Vector3.Lerp(transform.position, new Vector3(target.position.x - 2, target.position.y - 1, transform.position.z), Time.deltaTime * 5f);
     }
 }

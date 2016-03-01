@@ -9,8 +9,12 @@ public class TriggerText : MonoBehaviour {
     public Text text;
     public Image face;
     public Sprite NPCImage;
-    public GameObject target;
-    
+    public GameObject skills;
+    public GameObject playerStatusHUD;
+
+    [HideInInspector]
+    public GameObject target;    
+    [HideInInspector]
     public string[] dialogue;
     string[] temp;
     int dialogueLength;
@@ -32,44 +36,79 @@ public class TriggerText : MonoBehaviour {
 
     void OnTriggerStay2D(Collider2D col)
     {
-        advanceDialogue = target.GetComponent<DialogueHandler>().advanceDialogue;
+        if(col.tag == "Player")
+        {
+            advanceDialogue = target.GetComponent<DialogueHandler>().advanceDialogue;
 
-        if (index >= targetArray.Length)
-        {
-            panel.SetActive(false);
-        }
-        else
-        {
-            if (ConversationScript.convoDone == false && Input.GetKeyDown("e") )                                             //this activates when the player enters the collider and presses e
-            {
-                face.sprite = NPCImage;
-                ConversationScript.conversation = dialogue;
-                panel.SetActive(true);
-                player.GetComponent<PlayerMovement>().enabled = false;
-                player.GetComponent<Rigidbody2D>().velocity = Vector3.zero;
-            }
-            else if (ConversationScript.convoDone && (Input.GetKeyDown("e")) )              //this runs when the dialogue is done
+            //if (index >= targetArray.Length)
+            //{
+            //    index = 0;
+            //}
+
+            //if (index <= targetArray.Length)
+            //{
+            //    target = targetArray[index];
+            //    dialogue = target.GetComponent<DialogueHandler>().dialogue;
+            //    temp = new string[dialogue.Length];
+            //}
+
+            if (index >= targetArray.Length)
             {
                 panel.SetActive(false);
-                ConversationScript.convIndex = 0;
-                player.GetComponent<PlayerMovement>().enabled = true;
             }
-        }
+            else
+            {
+                if (ConversationScript.convoDone == false && Input.GetKeyDown("e"))            //this activates when the player enters the collider and presses e
+                {
+                    skills.SetActive(false);
+                    playerStatusHUD.SetActive(false);
+                    face.sprite = NPCImage;
+                    ConversationScript.conversation = dialogue;
+                    panel.SetActive(true);
+                    player.GetComponent<PlayerMovement>().enabled = false;
+                    player.GetComponent<Rigidbody2D>().velocity = Vector3.zero;
+                }
+                else if (ConversationScript.convoDone && (Input.GetKeyDown("e")))              //this runs when the dialogue is done
+                {
+                    panel.SetActive(false);
+                    ConversationScript.convIndex = 0;
+                    skills.SetActive(true);
+                    playerStatusHUD.SetActive(true);
+                    player.GetComponent<PlayerMovement>().enabled = true;
+
+                    //ConversationScript.convoDone = false;
+
+                    //if (advanceDialogue)
+                    //{
+                    //    index = index + 1;
+                    //    dialogue = temp;
+                    //    //ConversationScript.convoDone = false;
+                    //}
+                    //else
+                    //{
+                    //    ConversationScript.convoDone = false;
+                    //}
+                }
+            }
+        }        
     }
 
     void OnTriggerEnter2D(Collider2D col)
     {
-        if (index >= targetArray.Length)
+        if (col.tag == "Player")
         {
-            index = 0;
-        }
+            if (index >= targetArray.Length)
+            {
+                index = 0;
+            }
 
-        if (index <= targetArray.Length)
-        {
-            target = targetArray[index];
-            dialogue = target.GetComponent<DialogueHandler>().dialogue;
-            temp = new string[dialogue.Length];
-        }        
+            if (index <= targetArray.Length)
+            {
+                target = targetArray[index];
+                dialogue = target.GetComponent<DialogueHandler>().dialogue;
+                temp = new string[dialogue.Length];
+            }
+        }                    
     }
 
     void OnTriggerExit2D(Collider2D col)
