@@ -20,8 +20,8 @@ public class AiIntermediate : MonoBehaviour {
 	public float attackTimer;
 	private float permentTimer;
 
-	//private int		fleeNumber;
-	//public 	int		fleePercent;
+	//private int	fleeNumber;
+	//public  int	fleePercent;
 	public 	float 	fleeHealthPercent;
 	private float 	fleeHealth;
 
