@@ -44,7 +44,8 @@ public class PlayerReceivesDamage : MonoBehaviour
 			{
 				//print ("deal damage");
 				hitChance = Random.Range (0.0f, 1.0f);
-				defDex_calc = (enemy.gameObject.GetComponent<EnemiesReceiveDamage> ().dexterity - _player.GetComponent<CombatScript> ().dexterity) / enemy.gameObject.GetComponent<EnemiesReceiveDamage> ().dexterity;
+                defDex_calc = enemy.gameObject.GetComponent<EnemiesReceiveDamage>().dexterity - _player.GetComponent<CombatScript>().defense; 
+                defDex_calc = defDex_calc / enemy.gameObject.GetComponent<EnemiesReceiveDamage> ().dexterity;
 				if (defDex_calc > 0.95f)
 					defDex_calc = .95f;
 				if (defDex_calc < 0.05f)

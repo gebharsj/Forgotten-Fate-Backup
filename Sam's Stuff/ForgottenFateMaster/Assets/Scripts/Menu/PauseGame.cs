@@ -4,6 +4,8 @@ using System.Collections;
 public class PauseGame : MonoBehaviour {
 
 	public GameObject pauseMenu;
+    public GameObject skills;
+    public GameObject playerStatusHUD;
 	bool paused = false;
 	
 	void Start ()
@@ -18,11 +20,15 @@ public class PauseGame : MonoBehaviour {
 			if (paused)
 			{
 				pauseMenu.SetActive(true);
+                skills.SetActive(false);
+                playerStatusHUD.SetActive(false);
 			}
 			else
 			{
 				pauseMenu.SetActive(false);
-			}
+                skills.SetActive(true);
+                playerStatusHUD.SetActive(true);
+            }
 		}		
 	}
 	

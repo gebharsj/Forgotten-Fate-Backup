@@ -12,7 +12,7 @@ public class TriggerText : MonoBehaviour {
     public GameObject skills;
     public GameObject playerStatusHUD;
 
-    [HideInInspector]
+    //[HideInInspector]
     public GameObject target;    
     [HideInInspector]
     public string[] dialogue;
@@ -36,21 +36,23 @@ public class TriggerText : MonoBehaviour {
 
     void OnTriggerStay2D(Collider2D col)
     {
-        if(col.tag == "Player")
+        print(ConversationScript.convoDone);
+
+        if (col.tag == "Player")
         {
+            if (index >= targetArray.Length)
+            {
+                index = 0;
+            }
+
+            if (index <= targetArray.Length)
+            {
+                target = targetArray[index];
+                dialogue = target.GetComponent<DialogueHandler>().dialogue;
+                temp = new string[dialogue.Length];
+            }
+
             advanceDialogue = target.GetComponent<DialogueHandler>().advanceDialogue;
-
-            //if (index >= targetArray.Length)
-            //{
-            //    index = 0;
-            //}
-
-            //if (index <= targetArray.Length)
-            //{
-            //    target = targetArray[index];
-            //    dialogue = target.GetComponent<DialogueHandler>().dialogue;
-            //    temp = new string[dialogue.Length];
-            //}
 
             if (index >= targetArray.Length)
             {
@@ -58,6 +60,7 @@ public class TriggerText : MonoBehaviour {
             }
             else
             {
+
                 if (ConversationScript.convoDone == false && Input.GetKeyDown("e"))            //this activates when the player enters the collider and presses e
                 {
                     skills.SetActive(false);
@@ -76,14 +79,14 @@ public class TriggerText : MonoBehaviour {
                     playerStatusHUD.SetActive(true);
                     player.GetComponent<PlayerMovement>().enabled = true;
 
-                    //ConversationScript.convoDone = false;
+                    ConversationScript.convoDone = false;
 
-                    //if (advanceDialogue)
-                    //{
-                    //    index = index + 1;
-                    //    dialogue = temp;
-                    //    //ConversationScript.convoDone = false;
-                    //}
+                    if (advanceDialogue)
+                    {
+                        index = index + 1;
+                        dialogue = temp;
+                        //ConversationScript.convoDone = false;
+                    }
                     //else
                     //{
                     //    ConversationScript.convoDone = false;
@@ -93,35 +96,35 @@ public class TriggerText : MonoBehaviour {
         }        
     }
 
-    void OnTriggerEnter2D(Collider2D col)
-    {
-        if (col.tag == "Player")
-        {
-            if (index >= targetArray.Length)
-            {
-                index = 0;
-            }
+    //void OnTriggerEnter2D(Collider2D col)
+    //{
+    //    if (col.tag == "Player")
+    //    {
+    //        if (index >= targetArray.Length)
+    //        {
+    //            index = 0;
+    //        }
 
-            if (index <= targetArray.Length)
-            {
-                target = targetArray[index];
-                dialogue = target.GetComponent<DialogueHandler>().dialogue;
-                temp = new string[dialogue.Length];
-            }
-        }                    
-    }
+    //        if (index <= targetArray.Length)
+    //        {
+    //            target = targetArray[index];
+    //            dialogue = target.GetComponent<DialogueHandler>().dialogue;
+    //            temp = new string[dialogue.Length];
+    //        }
+    //    }
+    //}
 
-    void OnTriggerExit2D(Collider2D col)
-    {
-        if (advanceDialogue)
-        {
-            index = index + 1;
-            dialogue = temp;
-            ConversationScript.convoDone = false;
-        }
-        else
-        {
-            ConversationScript.convoDone = false;
-        }
-    }
+    //void OnTriggerExit2D(Collider2D col)
+    //{
+    //    if (advanceDialogue)
+    //    {
+    //        index = index + 1;
+    //        dialogue = temp;
+    //        ConversationScript.convoDone = false;
+    //    }
+    //    else
+    //    {
+    //        ConversationScript.convoDone = false;
+    //    }
+    //}
 }

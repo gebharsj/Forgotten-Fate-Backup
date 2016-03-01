@@ -48,16 +48,13 @@ public class PlayerMovement : MonoBehaviour {
 		if (stamina <= 0) 
 			isSprinting = false;
 
-
         player.velocity = new Vector3(moveX, moveY, 0);        //use : transform.Translate(moveX, moveY, 0f); if we decide to go back to 3D
-
         
         // Only when left mouse button is not clicked, will the WSAD controls work.) 
         if (isSprinting == false) {
 			//WSAD control
 			moveX = Input.GetAxis ("Horizontal") * speed * Time.deltaTime;
-			moveY = Input.GetAxis ("Vertical") * speed * Time.deltaTime;
-			
+			moveY = Input.GetAxis ("Vertical") * speed * Time.deltaTime;			
 		} 
 		else 
 		{

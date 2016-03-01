@@ -17,13 +17,13 @@ public class ConversationScript : MonoBehaviour {
     public static string button1Text;
     public static string button2Text;
 
-    [HideInInspector]
+    //[HideInInspector]
     public static int convIndex = 0;
-    [HideInInspector]
+    //[HideInInspector]
     public int maxConvIndex;
-    [HideInInspector]
+   // [HideInInspector]
     public static bool convoDone = false;
-    [HideInInspector]
+   // [HideInInspector]
     public string text;
 
     bool textDone = false;
@@ -71,8 +71,7 @@ public class ConversationScript : MonoBehaviour {
             }
 
             button1.GetComponent<ButtonHandler>().buttonClicked = false;
-            button2.GetComponent<ButtonHandler>().buttonClicked = false;
-            
+            button2.GetComponent<ButtonHandler>().buttonClicked = false;           
         }
 
         if(convIndex == maxConvIndex)
@@ -83,7 +82,7 @@ public class ConversationScript : MonoBehaviour {
     }
 
     IEnumerator TypeWriter()
-    {
+    {        
         for (int i = 0; i <= text.Length; i++ )
         {
             textBox.text = text.Substring(0, i);
