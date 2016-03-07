@@ -22,7 +22,7 @@ public class ButtonHandler : MonoBehaviour {
 
     public void ChangeTargetIndex()
     {
-        //Debug.Log("target index " + targetIndex);
+        Debug.Log("target index " + targetIndex);
         ConversationScript.convIndex = targetIndex;
         buttonClicked = true;
     }
