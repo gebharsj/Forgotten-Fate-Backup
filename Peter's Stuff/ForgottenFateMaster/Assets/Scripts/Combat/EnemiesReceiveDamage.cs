@@ -30,14 +30,8 @@ public class EnemiesReceiveDamage : MonoBehaviour {
     private float burning;
     public GameObject burningChild;
 
-
-    //----EXP Variables---------
-    public int enemyLevel = 0;
-    [HideInInspector]
-    public float exp = 0f;
-    //private float playerLevel	= 1;
-    //private float maxExp = 0f;
-
+	public bool	dead	= false;
+	bool	nowDead		= true;
 
     //** SOUNDS **
     [HideInInspector]
@@ -102,27 +96,12 @@ public class EnemiesReceiveDamage : MonoBehaviour {
         }
 
         //if health is zero below, object dies
-        if (hp <= 0)
+        if (hp <= 0 && nowDead)
         {
-            Destroy(gameObject);
+			dead = true;
+			nowDead = false;
+			//Destroy(gameObject);
 
-            _player.GetComponent<CombatScript>().exp += (enemyLevel * 10);
-
-            // Debug.Log(_player.GetComponent<CombatScript>().exp + " exp");
-
-            //maxExp = 100 * Mathf.Pow(2.00 , _player.GetComponent<CombatScript>(). playerLevel);
-            _player.GetComponent<CombatScript>().maxExp = 100 * _player.GetComponent<CombatScript>().playerLevel;
-            //Debug.Log(_player.GetComponent<CombatScript>().maxExp + " maxExp before level");
-
-            if (_player.GetComponent<CombatScript>().exp >= _player.GetComponent<CombatScript>().maxExp)
-            {
-                _player.GetComponent<CombatScript>().playerLevel++;
-                _player.GetComponent<CombatScript>().exp = _player.GetComponent<CombatScript>().exp - _player.GetComponent<CombatScript>().maxExp;
-                _player.GetComponent<CombatScript>().normalDamage++;
-                //Debug.Log(exp + " exp after level");
-                //Debug.Log(_player.GetComponent<CombatScript>().playerLevel + "PLAYER LEVEL");
-                //Debug.Log(_player.GetComponent<CombatScript>().normalDamage + " damage");
-            }
         }
         //defense cannot be below 1 or else there will be a glitch
         if (defense < 1)
@@ -235,11 +214,11 @@ public class EnemiesReceiveDamage : MonoBehaviour {
 
             }
             //object is immovable as long as player is not charging
-            if (_player.GetComponent<CombatScript>().chargeDistance > 0)
-            {
-                rb.drag = 0;
-                rb.mass = 1;
-            }
+      //      if (_player.GetComponent<CombatScript>().chargeDistance > 0)
+          //  {
+          //      rb.drag = 0;
+            //    rb.mass = 1;
+          //  }
         }
         //resetting the conditions for damage
         if (hit == true && _player.GetComponent<CombatScript>().attackRate == 0)

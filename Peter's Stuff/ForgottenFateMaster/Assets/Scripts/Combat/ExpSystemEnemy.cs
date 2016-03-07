@@ -15,8 +15,9 @@ public class ExpSystemEnemy : MonoBehaviour {
 	// Update is called once per frame
 	void Update () 
 	{
-		if (this.gameObject.GetComponent<EnemiesReceiveDamage>().hp < 0) 
+		if (this.gameObject.GetComponent<EnemiesReceiveDamage>().dead) 
 		{
+			Debug.Log ("Oh We're Dead!");
 			_player.GetComponent<ExpSystemPlayer> ().exp += (enemyLevel * 10);
 		
 			//maxExp = 100 * Mathf.Pow(2.00 , _player.GetComponent<CombatScript>(). playerLevel);
@@ -29,6 +30,8 @@ public class ExpSystemEnemy : MonoBehaviour {
 							_player.GetComponent<ExpSystemPlayer> ().exp - _player.GetComponent<ExpSystemPlayer> ().maxExp;
 				_player.GetComponent<CombatScript> ().normalDamage++;
 			}
+			this.gameObject.GetComponent<EnemiesReceiveDamage>().dead = false;
+			this.gameObject.SetActive(false);
 		}
 	}
 }

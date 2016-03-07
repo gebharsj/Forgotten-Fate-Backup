@@ -25,15 +25,23 @@ public class AiIntermediate : MonoBehaviour {
 	public 	float 	fleeHealthPercent;
 	private float 	fleeHealth;
 
+	private float	xfloat;
+	private float 	yfloat;
+
 	public Transform target;
 	
 	public GameObject _player;
 	public GameObject _enemy;
+
+	public Transform _self;
+
+	public Vector2 force;
 	
 	bool	isNotTouching = true;
 	bool	noDamage 	= true;
 	bool	runAway 	= false;
 	bool	stayFight	= true;
+	bool	enemyTouch  = true;
 
 	// Use this for initialization
 	void Start ()
@@ -147,10 +155,18 @@ public class AiIntermediate : MonoBehaviour {
 		}
 	}
 
+	void OnCollisionEnter2D (Collision2D playerC)
+	{
+		if (playerC.gameObject.tag == "Enemy")
+		{
+			//enemyTouch = true;
+		}
+	 }
 	void OnCollisionStay2D(Collision2D playerC)
 	{
 		if (playerC.gameObject.tag == "Player")
 		{
+			//_self.enabled = true;
 			isNotTouching = false;
 			//StartCoroutine(AttackingImpulse());
 			if (attackTimer < 1) {
@@ -159,16 +175,31 @@ public class AiIntermediate : MonoBehaviour {
 			}
 		}
 		//-------Prevents Enemy From Pushing Player---------------
-		else if (playerC.gameObject.tag == "Enemy")
-		{
+		else if (enemyTouch)
+		{ 
+			if (playerC.gameObject.tag == "Enemy")
+			{
+				if (isNotTouching)
+				{
+					Vector2 pos = transform.position;
+					xfloat	=	pos.x;
+					yfloat	= 	pos.y;
+
+					transform.position = new Vector2(xfloat - .2f	, yfloat - .3f);
+
+					//enemyTouch = false;
+				}
+			}
+
 			_enemy = playerC.gameObject;
 
-			if (_enemy.GetComponent<AiIntermediate> ().isNotTouching == false)
+
+			/*if (_enemy.GetComponent<AiIntermediate> ().isNotTouching == false)
 			{
 				isNotTouching = false;
 			}
 			else
-				isNotTouching = true;
+				isNotTouching = true;*/
 		}
 	}
 
