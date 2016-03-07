@@ -159,17 +159,17 @@ public class AiIntermediate : MonoBehaviour {
 	{
 		if (playerC.gameObject.tag == "Enemy")
 		{
-			//enemyTouch = true;
+			enemyTouch = true;
 		}
 	 }
 	void OnCollisionStay2D(Collision2D playerC)
 	{
 		if (playerC.gameObject.tag == "Player")
 		{
-			//_self.enabled = true;
 			isNotTouching = false;
-			//StartCoroutine(AttackingImpulse());
-			if (attackTimer < 1) {
+
+			if (attackTimer < 1) 
+			{
 				target.GetComponent<PlayerReceivesDamage> ().meleeHits++;
 				attackTimer = permentTimer;
 			}
@@ -177,19 +177,17 @@ public class AiIntermediate : MonoBehaviour {
 		//-------Prevents Enemy From Pushing Player---------------
 		else if (enemyTouch)
 		{ 
-			if (playerC.gameObject.tag == "Enemy")
+			if (isNotTouching)
 			{
-				if (isNotTouching)
-				{
 					Vector2 pos = transform.position;
 					xfloat	=	pos.x;
 					yfloat	= 	pos.y;
 
-					transform.position = new Vector2(xfloat - .2f	, yfloat - .3f);
+					transform.position = new Vector2(xfloat	, yfloat - 1.0f);
 
-					//enemyTouch = false;
-				}
+					enemyTouch = false;
 			}
+
 
 			_enemy = playerC.gameObject;
 
