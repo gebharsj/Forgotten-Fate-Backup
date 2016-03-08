@@ -49,10 +49,7 @@ public class PlayerCombatOverlay : MonoBehaviour {
 		SetHealth (calculatorHealth);
 		SetMana (calculatorStamina);
 		SetExp (calculatorExp);
-
-		//print (calculatorExp + " Calc. EXP");
-		//print (calculatorHealth + " Calc. Health");
-
+		
 		//--------------Convert Numbers to String-----------------
 		placeHolder = _player.GetComponent<CombatScript> ().health;
 		placeHolder = placeHolder * 10;

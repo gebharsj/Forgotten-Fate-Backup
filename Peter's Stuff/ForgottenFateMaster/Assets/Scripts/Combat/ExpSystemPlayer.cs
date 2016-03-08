@@ -19,7 +19,8 @@ public class ExpSystemPlayer : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
-	
+	void Update () 
+	{
+		_player.GetComponent<ExpSystemPlayer>().maxExp = 100 * _player.GetComponent<ExpSystemPlayer>().playerLevel;
 	}
 }

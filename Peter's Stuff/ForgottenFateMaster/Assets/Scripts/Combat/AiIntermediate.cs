@@ -36,7 +36,7 @@ public class AiIntermediate : MonoBehaviour {
 	public Transform _self;
 
 	public Vector2 force;
-	
+
 	bool	isNotTouching = true;
 	bool	noDamage 	= true;
 	bool	runAway 	= false;
@@ -84,6 +84,7 @@ public class AiIntermediate : MonoBehaviour {
 			}
 		}
 
+		2DCollider.
 		//-------------Random Chance of Fleeing-------
 		if (stayFight)
 		{
@@ -166,7 +167,7 @@ public class AiIntermediate : MonoBehaviour {
 	{
 		if (playerC.gameObject.tag == "Player")
 		{
-			isNotTouching = false;
+			playerC.gameObject
 
 			if (attackTimer < 1) 
 			{

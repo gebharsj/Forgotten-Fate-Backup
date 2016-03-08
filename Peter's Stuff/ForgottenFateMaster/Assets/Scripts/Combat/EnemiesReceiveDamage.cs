@@ -50,9 +50,6 @@ public class EnemiesReceiveDamage : MonoBehaviour {
     {
 
         rb = GetComponent<Rigidbody2D>();
-        _player.GetComponent<CombatScript>().maxExp = 100 * _player.GetComponent<CombatScript>().playerLevel; //so maxExp =/= 0
-
-
         au_miss1 = gameObject.AddComponent<AudioSource>();
         AudioClip miss1;
         // Resources must be in any folder named Resources.  load as type and cast as type because Unity returns Object by default.
@@ -313,7 +310,7 @@ public class EnemiesReceiveDamage : MonoBehaviour {
         tempRect.transform.localScale = CBTPrefab.transform.localScale;
         tempRect.transform.localRotation = CBTPrefab.transform.localRotation;
 
-        Debug.Log(tempRect.transform.localPosition);
+      //  Debug.Log(tempRect.transform.localPosition);
 
         temp.GetComponent<Text>().text = text;
         Destroy(temp.gameObject, 3);

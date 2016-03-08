@@ -17,10 +17,8 @@ public class ExpSystemEnemy : MonoBehaviour {
 	{
 		if (this.gameObject.GetComponent<EnemiesReceiveDamage>().dead) 
 		{
-			Debug.Log ("Oh We're Dead!");
 			_player.GetComponent<ExpSystemPlayer> ().exp += (enemyLevel * 10);
-		
-			//maxExp = 100 * Mathf.Pow(2.00 , _player.GetComponent<CombatScript>(). playerLevel);
+	
 			_player.GetComponent<ExpSystemPlayer> ().maxExp = 100 * _player.GetComponent<ExpSystemPlayer> ().playerLevel;
 		
 			if (_player.GetComponent<ExpSystemPlayer> ().exp >= _player.GetComponent<ExpSystemPlayer> ().maxExp) 
