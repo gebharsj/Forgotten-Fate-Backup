@@ -25,23 +25,46 @@ public class AiIntermediate : MonoBehaviour {
 	public 	float 	fleeHealthPercent;
 	private float 	fleeHealth;
 
-	private float	xfloat;
-	private float 	yfloat;
+	private float	objectHeight;
+	private float 	objectWidth;
 
-	public Transform target;
+	public Transform targetPlayer;
+	public Transform targetObject;
 	
 	public GameObject _player;
 	public GameObject _enemy;
+	//-------Testing-----
+	public GameObject _destination;
+
+	private Vector3 vectorPoint1;
+	private Vector3 vectorPoint2;
+	private Vector3 vectorPoint3;
+	private Vector3 vectorPoint4;
+	private Vector3 vectorPoint5;
+	private Vector3 vectorPoint6;
+	private Vector3 vectorPoint7;
+	private Vector3 vectorPoint8;
 
 	public Transform _self;
 
-	public Vector2 force;
+	public Collider2D _collider;
+	public Collider2D _ownCollider;
+
+	//--------bools for direction-----
+	bool 	movingUp	=true;
+	bool	movingRight	=false;
+
+	bool	playerTouch = false;
+	bool	objectTouch = false;
 
 	bool	isNotTouching = true;
 	bool	noDamage 	= true;
 	bool	runAway 	= false;
 	bool	stayFight	= true;
 	bool	enemyTouch  = true;
+	bool	stopEnemyTouch	= false;
+	bool 	obstacleNav	= false;
+	bool	enemyNav	= false;
 
 	// Use this for initialization
 	void Start ()
@@ -63,7 +86,7 @@ public class AiIntermediate : MonoBehaviour {
 			attackTimer -= 1 * Time.deltaTime;
 		}
 
-		targetDistance = Vector3.Distance (target.position, transform.position);
+		targetDistance = Vector3.Distance (targetPlayer.position, transform.position);
 
 		//-------Speed Changes Based Upon Distance------------
 		if (targetDistance > sprintDistance)
@@ -83,127 +106,192 @@ public class AiIntermediate : MonoBehaviour {
 				//print ("I've Been Hit!");
 			}
 		}
-
-		2DCollider.
+		
 		//-------------Random Chance of Fleeing-------
-		if (stayFight)
+		if (runAway == false)
 		{
 			random = 0;
 			if (this.gameObject.GetComponent<EnemiesReceiveDamage> ().hp < fleeHealth)
 			{
-				//fleeNumber = 1 * 100 / fleePercent;
 				stayFight = false; //this is here CHRIS
-				random = Random.Range (1, 5);//fleeNumber);
-				//print (fleeNumber + ": Flee Int");
-				//print (random + ": Random Number");
-				
+				random = Random.Range (1, 1);//fleeNumber);
+
 				if (random == 1) 
 				{
 					runAway = true;
+					print ("Run away!");
 				}
 			}
 		}
+		else
+			MovingPhase(targetPlayer, -fastMovementSpeed);
 
 		//------Moves Towards the Player-------------
 		if (targetDistance < attackDistance)
 		{
-			MovingPhase();
+			if (playerTouch == false && runAway == false && objectTouch == false)
+			{
+				MovingPhase(targetPlayer, normalMovementSpeed);
+			}
+		}
+		//-------Enemy Moves Around Obstacle-----------
+		if (obstacleNav) 
+		{
+			MovingPhase (targetObject, normalMovementSpeed + 2);
+		} 
+		else if (enemyNav) 
+		{
+			MovingPhase (targetObject, normalMovementSpeed);
 		}
 	}
 
-	void MovingPhase()
-	{
-		if (runAway) 
+	void MovingPhase(Transform target, float movingSpeed)
+	{ 
+		print (target);
+		if (target.position.y > transform.position.y) 
 		{
-			//print ("RUN AWAY!");
-			//---------Opposite of isNotTouching------------
-			if (target.position.y > transform.position.y) {
-				transform.position += transform.up * -normalMovementSpeed * Time.deltaTime;
-				//Debug.Log ("We;re going up!");
-			} else {
-				transform.position += transform.up * normalMovementSpeed * Time.deltaTime;
-				//Debug.Log ("We;re going down!");
-			}
-			
-			if (target.position.x > transform.position.x) {
-				transform.position += transform.right * -normalMovementSpeed * Time.deltaTime;
-				//Debug.Log ("We;re going right!!");
-			} else {
-				transform.position += transform.right * normalMovementSpeed * Time.deltaTime;
-				//Debug.Log ("We;re going left!");
-			}
+			transform.position += transform.up * movingSpeed * Time.deltaTime;
+			movingUp = true;
+		} 
+		else if (target.position.y < transform.position.y) 
+		{
+			transform.position += transform.up * -movingSpeed * Time.deltaTime;
+			movingUp = false;
+		} 
+		else
+		{
+			transform.position += transform.up * 0;
 		}
 
-		else if (isNotTouching) 
+		if (target.position.x > transform.position.x)
 		{
-			if (target.position.y > transform.position.y) 
-			{
-				transform.position += transform.up * normalMovementSpeed * Time.deltaTime;
-			} 
-			else 
-			{
-				transform.position += transform.up * -normalMovementSpeed * Time.deltaTime;
-			}
-
-			if (target.position.x > transform.position.x)
-			{
-				transform.position += transform.right * normalMovementSpeed * Time.deltaTime;
-			}
-			else 
-			{
-				transform.position += transform.right * -normalMovementSpeed * Time.deltaTime;
-			}
+			transform.position += transform.right * movingSpeed * Time.deltaTime;
+			movingRight = true;
+		}
+		else if (target.position.x < transform.position.x)
+		{
+			transform.position += transform.right * -movingSpeed * Time.deltaTime;
+			movingRight = false;
+		}
+		else
+		{
+			transform.position += transform.right * 0;
 		}
 	}
 
 	void OnCollisionEnter2D (Collision2D playerC)
 	{
-		if (playerC.gameObject.tag == "Enemy")
+		if (playerC.gameObject.tag == "Player")
+		{
+			playerTouch = true;
+		} 
+		else if (playerC.gameObject.tag == "Object") 
+		{
+			print ("entered");
+			objectTouch = true;
+			targetObject = CreateVectorPoints(playerC.collider);
+		}
+		else if (playerC.gameObject.tag == "Enemy")
 		{
 			enemyTouch = true;
+			objectTouch = false;
+			targetObject = CreateVectorPoints(playerC.collider);
 		}
 	 }
 	void OnCollisionStay2D(Collision2D playerC)
 	{
-		if (playerC.gameObject.tag == "Player")
+		if (playerTouch) 
 		{
-			playerC.gameObject
-
+			_player = playerC.gameObject;
 			if (attackTimer < 1) 
 			{
-				target.GetComponent<PlayerReceivesDamage> ().meleeHits++;
+				_player.GetComponent<PlayerReceivesDamage> ().meleeHits++;
 				attackTimer = permentTimer;
 			}
+		} 
+		//-----Move Around Obstacles-----
+		else if (objectTouch) 
+		{
+			obstacleNav = true;
 		}
-		//-------Prevents Enemy From Pushing Player---------------
 		else if (enemyTouch)
-		{ 
-			if (isNotTouching)
-			{
-					Vector2 pos = transform.position;
-					xfloat	=	pos.x;
-					yfloat	= 	pos.y;
-
-					transform.position = new Vector2(xfloat	, yfloat - 1.0f);
-
-					enemyTouch = false;
-			}
-
-
-			_enemy = playerC.gameObject;
-
-
-			/*if (_enemy.GetComponent<AiIntermediate> ().isNotTouching == false)
-			{
-				isNotTouching = false;
-			}
-			else
-				isNotTouching = true;*/
+		{
+			obstacleNav = false;
+			enemyNav = true;
 		}
 	}
 
 	void OnCollisionExit2D (Collision2D playerC)
 	{
-		isNotTouching = true;
+		if (playerC.gameObject.tag == "Player")
+		{
+			playerTouch = false;
+		} 
+		else if (playerC.gameObject.tag == "Object") 
+		{
+			print ("left!");
+			objectTouch = false;
+			obstacleNav = false;
+		}
+	}
+
+	Transform CreateVectorPoints (Collider2D _collider)
+	{
+		//---------Finding the 8 Points------
+		vectorPoint1 = new Vector3 (_collider.bounds.max.x,
+		                            _collider.bounds.max.y  + (transform.lossyScale.y * 2), 0);
+		
+		vectorPoint2 = new Vector3 (_collider.bounds.max.x + (transform.lossyScale.x * 2),
+		                            _collider.bounds.max.y, 0);
+		
+		vectorPoint3 = new Vector3 (_collider.bounds.max.x + (transform.lossyScale.x * 2),
+		                            _collider.bounds.min.y, 0);
+		
+		vectorPoint4 = new Vector3 (_collider.bounds.max.x,
+		                            _collider.bounds.min.y  - (transform.lossyScale.y * 2), 0);
+		
+		vectorPoint5 = new Vector3 (_collider.bounds.min.x,
+		                            _collider.bounds.min.y  - (transform.lossyScale.y * 2), 0);
+		
+		vectorPoint6 = new Vector3 (_collider.bounds.min.x - (transform.lossyScale.x * 2),
+		                            _collider.bounds.min.y, 0);
+		
+		vectorPoint7 = new Vector3 (_collider.bounds.min.x -(transform.lossyScale.x * 2),
+		                            _collider.bounds.max.y, 0);
+		
+		vectorPoint8 = new Vector3 (_collider.bounds.min.x,
+		                            _collider.bounds.max.y  + (transform.lossyScale.y * 2), 0);
+		
+		
+		if (_collider.bounds.max.x <= _ownCollider.bounds.min.x) //on the right side
+		{
+			if (movingUp)
+				targetObject.position = vectorPoint1;
+			else //moving down
+				targetObject.position = vectorPoint4;
+		}
+		else if (_collider.bounds.min.x > _ownCollider.bounds.max.x) //on the left side
+		{
+			if (movingUp)
+				targetObject.position = vectorPoint8;
+			else //moving down
+				targetObject.position = vectorPoint5;
+		}
+		else if (_collider.bounds.min.y > _ownCollider.bounds.max.y) //on the bottom
+		{
+			if (movingRight)
+				targetObject.position = vectorPoint3;
+			else //moving left
+				targetObject.position = vectorPoint6;
+		}
+		else if (_collider.bounds.max.y < _ownCollider.bounds.min.y) //on the top
+		{
+			if (movingRight)
+				targetObject.position = vectorPoint2;
+			else //moving left
+				targetObject.position = vectorPoint7;
+		}
+
+		return targetObject;
 	}
 }
