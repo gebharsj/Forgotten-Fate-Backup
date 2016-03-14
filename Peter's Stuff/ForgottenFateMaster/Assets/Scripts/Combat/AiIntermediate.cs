@@ -30,6 +30,7 @@ public class AiIntermediate : MonoBehaviour {
 
 	public Transform targetPlayer;
 	public Transform targetObject;
+	public Transform targetRayCast;
 	
 	public GameObject _player;
 	public GameObject _enemy;
@@ -50,19 +51,18 @@ public class AiIntermediate : MonoBehaviour {
 	public Collider2D _collider;
 	public Collider2D _ownCollider;
 
+	private RaycastHit2D hit;
+
 	//--------bools for direction-----
-	bool 	movingUp	=true;
-	bool	movingRight	=false;
+	bool 	movingUp	= true;
+	bool	movingRight	= true;
 
 	bool	playerTouch = false;
 	bool	objectTouch = false;
 
-	bool	isNotTouching = true;
 	bool	noDamage 	= true;
 	bool	runAway 	= false;
-	bool	stayFight	= true;
-	bool	enemyTouch  = true;
-	bool	stopEnemyTouch	= false;
+	bool	enemyTouch  = false;
 	bool 	obstacleNav	= false;
 	bool	enemyNav	= false;
 
@@ -113,7 +113,6 @@ public class AiIntermediate : MonoBehaviour {
 			random = 0;
 			if (this.gameObject.GetComponent<EnemiesReceiveDamage> ().hp < fleeHealth)
 			{
-				stayFight = false; //this is here CHRIS
 				random = Random.Range (1, 1);//fleeNumber);
 
 				if (random == 1) 
@@ -129,19 +128,22 @@ public class AiIntermediate : MonoBehaviour {
 		//------Moves Towards the Player-------------
 		if (targetDistance < attackDistance)
 		{
-			if (playerTouch == false && runAway == false && objectTouch == false)
+			if (playerTouch == false && runAway == false && objectTouch == false && enemyTouch == false)
 			{
+				print ("PlayerNav");
 				MovingPhase(targetPlayer, normalMovementSpeed);
 			}
 		}
 		//-------Enemy Moves Around Obstacle-----------
-		if (obstacleNav) 
+		if (obstacleNav)
 		{
+			print ("ObstacleNav");
 			MovingPhase (targetObject, normalMovementSpeed + 2);
-		} 
+		}
 		else if (enemyNav) 
 		{
-			MovingPhase (targetObject, normalMovementSpeed);
+			print ("EnemyNav");
+			MovingPhase (targetObject, normalMovementSpeed + 2);
 		}
 	}
 
@@ -194,8 +196,59 @@ public class AiIntermediate : MonoBehaviour {
 		else if (playerC.gameObject.tag == "Enemy")
 		{
 			enemyTouch = true;
-			objectTouch = false;
-			targetObject = CreateVectorPoints(playerC.collider);
+			_enemy = playerC.gameObject;
+
+			if (_enemy.GetComponent<AiIntermediate> ().movingUp || _enemy.GetComponent<AiIntermediate> ().playerTouch)
+			{
+				print ("he's going up!");
+
+				targetRayCast.transform.InverseTransformPoint(new Vector3 (-1, 0, 0));
+				hit = Physics2D.Raycast (targetRayCast.transform.position, -Vector2.right, 2); //check if left is open
+				if (hit.collider == null)
+				{
+					print ("move to the left!");
+					targetObject.position = new Vector3 ((_ownCollider.bounds.min.x - 3), _ownCollider.bounds.min.y, 0);
+					objectTouch = false;
+				}
+				else
+				{
+					targetRayCast.transform.InverseTransformPoint( new Vector3 (1, 0, 0));
+					hit = Physics2D.Raycast (targetRayCast.transform.position, Vector2.right, 2); //check if right is open
+					if (hit.collider == null)
+					{
+						print ("move to the right!");
+						targetObject.position = new Vector3 ((_ownCollider.bounds.min.x + 3), _ownCollider.bounds.min.y, 0);
+						objectTouch = false;
+					}
+					else
+					{
+						targetRayCast.transform.InverseTransformPoint(new Vector3 (0, 2, 0));
+						hit = Physics2D.Raycast (targetRayCast.transform.position, Vector2.up, 2); //check if up is open
+						if (hit.collider == null)
+						{
+							print ("move to the up!");
+							targetObject.position = new Vector3 (_ownCollider.bounds.min.x, (_ownCollider.bounds.min.y + 3), 0);
+							objectTouch = false;
+						}
+						else
+						{
+							targetRayCast.transform.InverseTransformPoint(new Vector3 (0, -2, 0));
+							hit = Physics2D.Raycast (targetRayCast.transform.position, -Vector2.up, 2); //check if down is open
+							if (hit.collider == null)
+							{
+								print ("move to the down!");
+								targetObject.position = new Vector3 (_ownCollider.bounds.min.x, (_ownCollider.bounds.min.y - 3), 0);
+								objectTouch = false;
+							}
+							else
+								print ("HELP I'M TRAPPED!");
+						}
+					}
+				}
+
+			}
+			else
+				enemyTouch = false;
 		}
 	 }
 	void OnCollisionStay2D(Collision2D playerC)
@@ -235,6 +288,15 @@ public class AiIntermediate : MonoBehaviour {
 		}
 	}
 
+	void OnTriggerEnter2D (Collider2D _point)
+	{
+		if (_point.tag == "Point")
+		{
+			print ("you got there!");
+			enemyNav = false;
+			enemyTouch = false;
+		}
+	}
 	Transform CreateVectorPoints (Collider2D _collider)
 	{
 		//---------Finding the 8 Points------
