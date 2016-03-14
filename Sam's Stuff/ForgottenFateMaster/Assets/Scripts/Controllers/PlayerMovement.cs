@@ -38,8 +38,25 @@ public class PlayerMovement : MonoBehaviour {
 	
 	void Update()
 	{
-		//sprinting
-		if (Input.GetKeyDown(KeyCode.Space) && isSprinting == false && stamina > 0)
+        if (Input.GetKey(PlayerPrefs.GetString("MoveRight")))
+        {
+            transform.Translate(Vector3.right * speed * Time.deltaTime);
+        }
+        if (Input.GetKey(PlayerPrefs.GetString("MoveLeft")))
+        {
+            transform.Translate(Vector3.left * speed * Time.deltaTime);
+        }
+        if (Input.GetKey(PlayerPrefs.GetString("MoveUp")))
+        {
+            transform.Translate(Vector3.up * speed * Time.deltaTime);
+        }
+        if (Input.GetKey(PlayerPrefs.GetString("MoveDown")))
+        {
+            transform.Translate(Vector3.down * speed * Time.deltaTime);
+        }
+
+        //sprinting
+        if (Input.GetKeyDown(KeyCode.Space) && isSprinting == false && stamina > 0)
 			isSprinting = true;
 		
 		if (Input.GetKeyUp (KeyCode.Space) && isSprinting == true) 
@@ -53,14 +70,14 @@ public class PlayerMovement : MonoBehaviour {
         // Only when left mouse button is not clicked, will the WSAD controls work.) 
         if (isSprinting == false) {
 			//WSAD control
-			moveX = Input.GetAxis ("Horizontal") * speed * Time.deltaTime;
-			moveY = Input.GetAxis ("Vertical") * speed * Time.deltaTime;			
+			//moveX = Input.GetAxis ("Horizontal") * speed * Time.deltaTime;
+			//moveY = Input.GetAxis ("Vertical") * speed * Time.deltaTime;			
 		} 
 		else 
 		{
 			//sprinting and stamina drain
-			moveX = Input.GetAxis ("Horizontal") * speed * sprint * Time.deltaTime;
-			moveY = Input.GetAxis ("Vertical") * speed * sprint * Time.deltaTime;
+			//moveX = Input.GetAxis ("Horizontal") * speed * sprint * Time.deltaTime;
+			//moveY = Input.GetAxis ("Vertical") * speed * sprint * Time.deltaTime;
 			stamina -= 1 * Time.deltaTime;
 			staminaRecharge = 0;
 		}
@@ -83,8 +100,6 @@ public class PlayerMovement : MonoBehaviour {
 			//if stamina should happen to go above the max value
 			if (stamina > maxStamina)
 				stamina = maxStamina; 			
-		}
-
-        
+		}        
     }
 }

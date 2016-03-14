@@ -49,12 +49,12 @@ public class TriggerText : MonoBehaviour {
 
             advanceDialogue = target.GetComponent<DialogueHandler>().advanceDialogue;            
 
-            if (ConversationScript.convoDone == false && Input.GetKeyDown("e"))            //this activates when the player enters the collider and presses e
+            if (ConversationScript.convoDone == false && Input.GetKeyDown(PlayerPrefs.GetString("Interact")))            //this activates when the player enters the collider and presses e
             {
                 PassDialogue();
                 BeginConvo();
             }
-            else if (ConversationScript.convoDone && (Input.GetKeyDown("e")))              //this runs when the dialogue is done
+            else if (ConversationScript.convoDone && (Input.GetKeyDown(PlayerPrefs.GetString("Interact"))))              //this runs when the dialogue is done
             {
                 EndConvo();              
             }            

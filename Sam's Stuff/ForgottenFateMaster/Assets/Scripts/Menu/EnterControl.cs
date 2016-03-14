@@ -6,6 +6,7 @@ public class EnterControl : MonoBehaviour {
 
     public Text fieldText;
     public InputField inputField;
+    public string controlName;
 
 	// Use this for initialization
 	void Start () {
@@ -17,9 +18,9 @@ public class EnterControl : MonoBehaviour {
 	
 	}
 
-    public void SetControl(string controlName)
-    {
-        PlayerPrefs.SetString(controlName, inputField.text);
+    public void SetControl(InputField input)
+    {        
+        PlayerPrefs.SetString(controlName, input.text);
         fieldText.text = PlayerPrefs.GetString(controlName);
     }
 }
