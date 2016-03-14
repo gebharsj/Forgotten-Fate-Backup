@@ -30,7 +30,7 @@ public class PlayerReceivesDamage : MonoBehaviour
 	{
 
 
-			print ("Health" + _player.GetComponent<CombatScript> ().health);
+			
 
 	}
 	
@@ -42,7 +42,7 @@ public class PlayerReceivesDamage : MonoBehaviour
 		{
 			if (meleeHits > 0) 
 			{
-				print ("deal damage");
+
 				hitChance = Random.Range (0.0f, 1.0f);
 				defDex_calc = (enemy.gameObject.GetComponent<EnemiesReceiveDamage> ().dexterity - _player.GetComponent<CombatScript> ().dexterity) / enemy.gameObject.GetComponent<EnemiesReceiveDamage> ().dexterity;
 				if (defDex_calc > 0.95f)
