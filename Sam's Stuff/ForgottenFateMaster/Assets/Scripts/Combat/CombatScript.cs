@@ -74,8 +74,8 @@ public class CombatScript : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
 	{
-		//switching from melee to range
-		if (Input.GetKeyUp(KeyCode.Q))
+        //switching from melee to range
+        if (Input.GetKeyUp(PlayerPrefs.GetString("SwitchWeap")))
 	    {
 			if (melee == false)
 			{

@@ -15,12 +15,12 @@ public class EnterControl : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
-	}
+
+    }
 
     public void SetControl(InputField input)
-    {        
+    {   
         PlayerPrefs.SetString(controlName, input.text);
-        fieldText.text = PlayerPrefs.GetString(controlName);
+        fieldText.text = PlayerPrefs.GetString(controlName);                 
     }
 }
