@@ -82,7 +82,7 @@ public class ConversationScript : MonoBehaviour {
         {            
             textBox.text = text.Substring(0, i);
             sound.Play();
-            yield return new WaitForSeconds(writeSpeed);            
+            yield return new WaitForSeconds(PlayerPrefs.GetFloat("WriteSpeed"));            
         }
         convIndex++;
         textDone = true;       
