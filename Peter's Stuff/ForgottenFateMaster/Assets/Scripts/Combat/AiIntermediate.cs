@@ -33,7 +33,7 @@ public class AiIntermediate : MonoBehaviour {
 	public Transform targetRayCast;
 	
 	public GameObject _player;
-	public GameObject _enemy;
+	private GameObject _enemy;
 
 	[HideInInspector]
 	public GameObject _destination;
@@ -47,8 +47,6 @@ public class AiIntermediate : MonoBehaviour {
 	private Vector3 vectorPoint7;
 	private Vector3 vectorPoint8;
 	private Vector3 vectorDestination;
-
-	public Transform _self;
 
 	[HideInInspector]
 	public Collider2D _collider;
@@ -66,7 +64,7 @@ public class AiIntermediate : MonoBehaviour {
 
 	bool	noDamage 	= true;
 	bool	runAway 	= false;
-	public bool obstacleNav	= false;
+	public bool objectNav	= false;
 	public bool	enemyNav	= false;
 
 	// Use this for initialization
@@ -116,7 +114,7 @@ public class AiIntermediate : MonoBehaviour {
 			random = 0;
 			if (this.gameObject.GetComponent<EnemiesReceiveDamage> ().hp < fleeHealth)
 			{
-				random = Random.Range (1, 1);//fleeNumber);
+				random = Random.Range (1, 5);//fleeNumber);
 
 				if (random == 1) 
 				{
@@ -138,15 +136,21 @@ public class AiIntermediate : MonoBehaviour {
 			}
 		}
 		//-------Enemy Moves Around Obstacle-----------
-		if (obstacleNav)
+		if (objectNav)
 		{
-			print ("ObstacleNav");
+			print ("ObjectNav");
 			MovingPhase (targetObject, normalMovementSpeed + 2);
 		}
 		else if (enemyNav) 
 		{
 			print ("EnemyNav");
 			MovingPhase (targetObject, normalMovementSpeed + 2);
+		}
+
+		if (playerTouch) // prevents enemy from pushing the enemy touching the player
+		{
+			enemyNav = false;
+			enemyTouch = false;
 		}
 	}
 
@@ -189,6 +193,8 @@ public class AiIntermediate : MonoBehaviour {
 		if (playerC.gameObject.tag == "Player")
 		{
 			playerTouch = true;
+			enemyNav = false;
+			objectNav = false;
 		} 
 		else if (playerC.gameObject.tag == "Object") 
 		{
@@ -228,7 +234,7 @@ public class AiIntermediate : MonoBehaviour {
 						}
 						else
 						{
-							hit = RayDown(targetRayCast); //check up
+							hit = RayUp(targetRayCast); //check up
 							if (hit.collider == null)
 							{
 								print ("move to the up!");
@@ -307,12 +313,33 @@ public class AiIntermediate : MonoBehaviour {
 						}
 					}
 				}
-				else
-					enemyTouch = false;
+				//else
+					//enemyTouch = false;
 			}
 			else //playerTouch = true
 			{
 				print ("This guy's attacking....");
+
+				_collider = playerC.collider;
+
+				if (_collider.bounds.max.x <= _ownCollider.bounds.min.x || _collider.bounds.min.x > _ownCollider.bounds.max.x) //on the left or right side
+				{
+					//numHits++;
+					vectorDestination = new Vector3 (_ownCollider.bounds.center.x, (_ownCollider.bounds.center.y + 6), 0);
+					playerC.gameObject.GetComponent<AiIntermediate>().targetObject.position = vectorDestination;
+					print ("We're going around!");
+					enemyNav = true;
+				}
+				else
+				{
+					//numHits++;
+					vectorDestination = new Vector3 ((_ownCollider.bounds.center.x + 6 ), _ownCollider.bounds.center.y, 0);
+					targetObject.position = vectorDestination;
+					print ("We're going up!");
+					enemyNav = true;
+				}
+
+					
 
 
 			}
@@ -325,8 +352,8 @@ public class AiIntermediate : MonoBehaviour {
 		//hit = Physics2D.BoxCast (targetRayCast.transform.position, new Vector2 (_ownCollider.bounds.min.x - 3, _ownCollider.bounds.min.y), 0, -Vector2.right);
 		Debug.DrawRay (targetRayCast.transform.position, -Vector2.right, Color.green, 2);
 
-		vectorDestination = new Vector3 ((_ownCollider.bounds.min.x - 3), _ownCollider.bounds.min.y, 0);
-
+		vectorDestination = new Vector3 ((_ownCollider.bounds.min.x - 3 ), _ownCollider.bounds.center.y, 0);
+		//numHits++;
 		return hit;
 	}
 
@@ -336,8 +363,9 @@ public class AiIntermediate : MonoBehaviour {
 		hit = Physics2D.Raycast (targetRayCast.transform.position, Vector2.right, 2); //check if right is open
 		Debug.DrawRay (targetRayCast.transform.position, Vector2.right, Color.red, 2);
 
-		vectorDestination = new Vector3 ((_ownCollider.bounds.min.x + 3), _ownCollider.bounds.min.y, 0);
+		vectorDestination = new Vector3 ((_ownCollider.bounds.min.x + 3 ), _ownCollider.bounds.center.y, 0);
 
+		//numHits++;
 		return hit;
 	}
 
@@ -348,7 +376,7 @@ public class AiIntermediate : MonoBehaviour {
 		Debug.DrawRay (targetRayCast.transform.position, Vector2.up, Color.black, 2);
 
 		vectorDestination = new Vector3 (_ownCollider.bounds.min.x, (_ownCollider.bounds.center.y + 4), 0);
-
+		//numHits++;
 		return hit;
 	}
 
@@ -359,14 +387,16 @@ public class AiIntermediate : MonoBehaviour {
 		Debug.DrawRay (targetRayCast.transform.position, -Vector2.up, Color.yellow, 2);
 
 		vectorDestination = new Vector3 (_ownCollider.bounds.min.x, (_ownCollider.bounds.center.y - 4), 0);
-
+		//numHits++;
 		return hit;
 	}
 	void OnCollisionStay2D(Collision2D playerC)
 	{
 		if (playerTouch) 
 		{
+			enemyTouch = false;
 			_player = playerC.gameObject;
+			this.gameObject.GetComponent<EnemiesReceiveDamage>().rb.mass = 5000;
 			movingUp = false;
 			movingRight = false;
 			if (attackTimer < 1)
@@ -381,12 +411,12 @@ public class AiIntermediate : MonoBehaviour {
 		//-----Move Around Obstacles-----
 		else if (objectTouch) 
 		{
-			obstacleNav = true;
+			objectNav = true;
 		}
 		else if (enemyTouch)
 		{
 			print ("HEHE, we're touching");
-			obstacleNav = false;
+			objectNav = false;
 			enemyNav = true;
 		}
 	}
@@ -399,9 +429,8 @@ public class AiIntermediate : MonoBehaviour {
 		} 
 		else if (playerC.gameObject.tag == "Object")
 		{
-			print ("left!");
 			objectTouch = false;
-			obstacleNav = false;
+			objectNav = false;
 		}
 		else if (playerC.gameObject.tag == "Enemy")
 		{
