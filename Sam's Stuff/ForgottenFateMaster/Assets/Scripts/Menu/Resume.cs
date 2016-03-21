@@ -4,14 +4,14 @@ using System.Collections;
 public class Resume : MonoBehaviour {
 
 	public GameObject pauseMenu;
-    public GameObject skills;
-    public GameObject playerStatusHUD;
-
-    public void ResumeGame()
+    public GameObject statusHUD;
+    public GameObject spells;
+	
+	public void ResumeGame()
 	{
 		pauseMenu.SetActive (false);
-        skills.SetActive(true);
-        playerStatusHUD.SetActive(true);
-        Time.timeScale = 1;
+        statusHUD.SetActive(true);
+        spells.SetActive(true);
+		Time.timeScale = 1;
 	}
 }

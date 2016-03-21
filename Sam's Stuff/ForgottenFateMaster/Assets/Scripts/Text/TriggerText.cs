@@ -80,6 +80,7 @@ public class TriggerText : MonoBehaviour {
         skills.SetActive(true);
         playerStatusHUD.SetActive(true);
         player.GetComponent<PlayerMovement>().enabled = true;
+        player.GetComponent<CombatScript>().enabled = true;
         ConversationScript.convIndex = 0;
         ConversationScript.convoDone = false;
         AdvanceDialogue();
@@ -94,6 +95,7 @@ public class TriggerText : MonoBehaviour {
         face.sprite = NPCImage;                                              //this should change to being an index of an array of images so we can have the players face appear when the player talks     
         player.GetComponent<PlayerMovement>().enabled = false;
         player.GetComponent<Rigidbody2D>().velocity = Vector3.zero;
+        player.GetComponent<CombatScript>().enabled = false;
     }
 
     void AdvanceDialogue()

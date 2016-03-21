@@ -79,10 +79,10 @@ public class ConversationScript : MonoBehaviour {
     IEnumerator TypeWriter()
     {        
         for (int i = 0; i <= text.Length; i++ )
-        {            
+        {
             textBox.text = text.Substring(0, i);
-            sound.Play();
-            yield return new WaitForSeconds(PlayerPrefs.GetFloat("WriteSpeed"));            
+			sound.Play ();
+            yield return new WaitForSeconds(PlayerPrefs.GetFloat("WriteSpeed"));
         }
         convIndex++;
         textDone = true;       

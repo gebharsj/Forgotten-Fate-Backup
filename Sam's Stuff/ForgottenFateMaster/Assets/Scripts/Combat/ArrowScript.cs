@@ -33,11 +33,11 @@ public class ArrowScript : MonoBehaviour {
                 //acquiring the variable playerDamage and setting the value of myDamage to that
                 //so that it can later be passed into the EnemieRecievesDamageScript of an object
                 myDMG = charge.gameObject.GetComponent<CombatScript>().playerDamage;
-                print("dmg " + myDMG);
+                //print("dmg " + myDMG);
                 //acquiring the "chargeShot" variable and setting the courotine to that value.
-                myWait = (charge.gameObject.GetComponent<CombatScript>().chargeShot * 0.3f) + 0.3f;
+                myWait = (charge.gameObject.GetComponent<CombatScript>().chargeShot * 1.0f) + 0.3f;
                 charge.gameObject.GetComponent<CombatScript>().chargeShot = 0;
-                print("charge " + myWait);
+                //print("charge " + myWait);
                 StartCoroutine(WaitAndPrint(myWait));
             }
         }
