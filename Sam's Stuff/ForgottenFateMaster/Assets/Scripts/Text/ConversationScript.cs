@@ -53,31 +53,14 @@ public class ConversationScript : MonoBehaviour {
         {
             if (textDone && !convoDone && (Input.GetKeyDown(PlayerPrefs.GetString("Interact"))))
             {
-                text = conversation[convIndex];
-                face.sprite = faceArray[convIndex];
-                if (faceArray[convIndex] == null)
-                {
-                    face.enabled = false;
-                }
-                textDone = false;
-                StartCoroutine(TypeWriter());
-                CheckForButtons();
+                HandleConvo();
             }
         }
         else
         {
             if (textDone && !convoDone && (button1.GetComponent<ButtonHandler>().buttonClicked || button2.GetComponent<ButtonHandler>().buttonClicked))
             {
-                text = conversation[convIndex];
-                face.sprite = faceArray[convIndex];
-                if (faceArray[convIndex] == null)
-                {
-                    face.enabled = false;
-                }
-                textDone = false;
-                StartCoroutine(TypeWriter());
-
-                CheckForButtons();
+                HandleConvo();
 
                 if (button1.GetComponent<ButtonHandler>().buttonClicked)
                 {
@@ -124,5 +107,22 @@ public class ConversationScript : MonoBehaviour {
     {
         button1.GetComponent<ButtonHandler>().buttonClicked = false;
         button2.GetComponent<ButtonHandler>().buttonClicked = false;
+    }
+
+    void HandleConvo()
+    {
+        text = conversation[convIndex];
+        face.sprite = faceArray[convIndex];
+        if (faceArray[convIndex] == null)
+        {
+            face.enabled = false;
+        }
+        else
+        {
+            face.enabled = true;
+        }
+        textDone = false;
+        StartCoroutine(TypeWriter());
+        CheckForButtons();
     }
 }
