@@ -4,34 +4,38 @@ using System.Collections;
 
 public class ConversationScript : MonoBehaviour {
 
-    public static string[] conversation;    
+    public string[] conversation;    
     public Text textBox;
+    public Image face;
     public float writeSpeed = 0.01f;
     public GameObject button1;
     public Text button1TextBox;    
     public GameObject button2;
     public Text button2TextBox;
     public AudioSource sound;
-    public static bool useButtons;
-    public static int indexForButtons;
-    public static string button1Text;
-    public static string button2Text;
+    public bool useButtons;
+    public int indexForButtons;
+    public string button1Text;
+    public string button2Text;
+    public Sprite[] faceArray;
 
     [HideInInspector]
-    public static int convIndex = 0;
+    public int convIndex = 0;
     [HideInInspector]
     public int maxConvIndex;
     [HideInInspector]
-    public static bool convoDone = false;
+    public bool convoDone = false;
     [HideInInspector]
     public string text;
 
     bool textDone = false;
-    public static bool buttonClicked;
+    public bool buttonClicked;
 
     // Use this for initialization
     void Start () {
-        text = conversation[0];        
+        indexForButtons = 0;
+        text = conversation[0];
+        face.sprite = faceArray[0];
         StartCoroutine(TypeWriter());
     }
 	
@@ -50,6 +54,11 @@ public class ConversationScript : MonoBehaviour {
             if (textDone && !convoDone && (Input.GetKeyDown(PlayerPrefs.GetString("Interact"))))
             {
                 text = conversation[convIndex];
+                face.sprite = faceArray[convIndex];
+                if (faceArray[convIndex] == null)
+                {
+                    face.enabled = false;
+                }
                 textDone = false;
                 StartCoroutine(TypeWriter());
                 CheckForButtons();
@@ -60,6 +69,11 @@ public class ConversationScript : MonoBehaviour {
             if (textDone && !convoDone && (button1.GetComponent<ButtonHandler>().buttonClicked || button2.GetComponent<ButtonHandler>().buttonClicked))
             {
                 text = conversation[convIndex];
+                face.sprite = faceArray[convIndex];
+                if (faceArray[convIndex] == null)
+                {
+                    face.enabled = false;
+                }
                 textDone = false;
                 StartCoroutine(TypeWriter());
 
@@ -97,6 +111,7 @@ public class ConversationScript : MonoBehaviour {
             button1.SetActive(true);
             button2.SetActive(true);
             useButtons = false;
+            indexForButtons = -1;
         }
         else
         {

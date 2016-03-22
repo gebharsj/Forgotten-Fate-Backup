@@ -4,6 +4,7 @@ using System.Collections;
 
 public class ButtonHandler : MonoBehaviour {
 
+    public Text convoText;
     public Text buttonTextBox;
     public int targetIndex;
     public int skipToIndex;
@@ -23,7 +24,7 @@ public class ButtonHandler : MonoBehaviour {
     public void ChangeTargetIndex()
     {
         //Debug.Log("target index " + targetIndex);
-        ConversationScript.convIndex = targetIndex;
+        convoText.GetComponent<ConversationScript>().convIndex = targetIndex;
         buttonClicked = true;
     }
 }

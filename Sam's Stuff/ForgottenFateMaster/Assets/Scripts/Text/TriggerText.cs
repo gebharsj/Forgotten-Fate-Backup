@@ -7,25 +7,38 @@ public class TriggerText : MonoBehaviour {
     public GameObject player;
     public GameObject panel;
     public Text text;
-    public Image face;
-    public Sprite NPCImage;
+    public Button button1;
+    public Button button2;
+    //public Image face;
+    public Sprite[] faceArray;
     public GameObject skills;
     public GameObject playerStatusHUD;
 
     [HideInInspector]
-    public GameObject target;    
-    [HideInInspector]
-    public string[] dialogue;
+    public GameObject target;
     string[] temp;
+    Sprite[] faceTemp;
     int dialogueLength;
-    bool advanceDialogue;
+   
 
     public GameObject[] targetArray;
     public int index = 0;
 
+    //Dialogue Handler variables
+    [HideInInspector]
+    public string[] dialogue;
+    [HideInInspector]
+    bool advanceDialogue;
+    [HideInInspector]
+    public bool useButtons;
+    [HideInInspector]
+    public int indexForButtons;
+  
+
     void Start()
     {
-                
+        indexForButtons = 0;
+        useButtons = false;
     }
 
     // Update is called once per frame
@@ -38,7 +51,7 @@ public class TriggerText : MonoBehaviour {
     {
         if (col.tag == "Player")
         {
-            if (index >= targetArray.Length)
+            if (index > targetArray.Length)
             {
                 index = 0;
             }
@@ -47,14 +60,14 @@ public class TriggerText : MonoBehaviour {
                 GetDialogue();
             }
 
-            advanceDialogue = target.GetComponent<DialogueHandler>().advanceDialogue;            
+            advanceDialogue = target.GetComponent<DialogueHandler>().advanceDialogue;
 
-            if (ConversationScript.convoDone == false && Input.GetKeyDown(PlayerPrefs.GetString("Interact")))            //this activates when the player enters the collider and presses e
+            if (text.GetComponent<ConversationScript>().convoDone == false && Input.GetKeyDown(PlayerPrefs.GetString("Interact")))            //this activates when the player enters the collider and presses e
             {
                 PassDialogue();
                 BeginConvo();
             }
-            else if (ConversationScript.convoDone && (Input.GetKeyDown(PlayerPrefs.GetString("Interact"))))              //this runs when the dialogue is done
+            else if (text.GetComponent<ConversationScript>().convoDone && (Input.GetKeyDown(PlayerPrefs.GetString("Interact"))))              //this runs when the dialogue is done
             {
                 EndConvo();              
             }            
@@ -65,12 +78,16 @@ public class TriggerText : MonoBehaviour {
     {
         target = targetArray[index];
         dialogue = target.GetComponent<DialogueHandler>().dialogue;
+        faceArray = target.GetComponent<DialogueHandler>().faceArray;
         temp = new string[dialogue.Length];
+        faceTemp = new Sprite[faceArray.Length];
+        print(faceArray.Length);
     }
 
     void PassDialogue()
     {
-        ConversationScript.conversation = dialogue;
+        text.GetComponent<ConversationScript>().conversation = dialogue;
+        text.GetComponent<ConversationScript>().faceArray = faceArray;
     }
 
     //Turns off text box, turns on player HUD & spells, enables player movement, resets conversationscript index
@@ -81,18 +98,23 @@ public class TriggerText : MonoBehaviour {
         playerStatusHUD.SetActive(true);
         player.GetComponent<PlayerMovement>().enabled = true;
         player.GetComponent<CombatScript>().enabled = true;
-        ConversationScript.convIndex = 0;
-        ConversationScript.convoDone = false;
+        text.GetComponent<ConversationScript>().convIndex = 0;
+        text.GetComponent<ConversationScript>().convoDone = false;
+        useButtons = false;
+        indexForButtons = 0;
+        dialogue = temp;
+        faceArray = faceTemp;
         AdvanceDialogue();
     }
 
     //Turns on text box, turns off player HUD & spells,passes NPC image, and disables player movement
     void BeginConvo()
     {
+        target.GetComponent<DialogueHandler>().ButtonHandler();
         panel.SetActive(true);
         skills.SetActive(false);
         playerStatusHUD.SetActive(false);
-        face.sprite = NPCImage;                                              //this should change to being an index of an array of images so we can have the players face appear when the player talks     
+        //face.sprite = faceArray[0];                                              //this should change to being an index of an array of images so we can have the players face appear when the player talks     
         player.GetComponent<PlayerMovement>().enabled = false;
         player.GetComponent<Rigidbody2D>().velocity = Vector3.zero;
         player.GetComponent<CombatScript>().enabled = false;
@@ -102,8 +124,7 @@ public class TriggerText : MonoBehaviour {
     {
         if (advanceDialogue)
         {
-            index = index + 1;
-            dialogue = temp;
-        }
+            index = index + 1;            
+        }        
     }
 }
