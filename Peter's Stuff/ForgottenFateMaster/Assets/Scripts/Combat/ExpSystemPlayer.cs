@@ -30,7 +30,7 @@ public class ExpSystemPlayer : MonoBehaviour {
 
 		if (levelUp)
 		{
-			InitCBT("LEVEL UP").GetComponent<Animator>().SetTrigger("LevelUp");
+			InitCBT("LevelUp").GetComponent<Animator>().SetTrigger("LevelUp");
 			levelUp = false;
 		}
 	}
