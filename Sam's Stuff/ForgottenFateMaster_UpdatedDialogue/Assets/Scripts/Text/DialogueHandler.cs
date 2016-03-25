@@ -12,13 +12,13 @@ public class DialogueHandler : MonoBehaviour {      //to use, create an empty ga
     public Sprite[] faceArray;
     public bool advanceDialogue = false;
     public bool useButtons;
-    public string[] button1Text;
-    public string[] button2Text;
-    public int[] indexForButtons;
-    public int[] button1SkipToIndex;
-    public int[] button2SkipToIndex;
-
-	
+    public string button1Text;
+    public string button2Text;
+    public int indexForButtons;
+    public int button1TargetIndex;
+    public int button1SkipToIndex;
+    public int button2TargetIndex;
+    public int button2SkipToIndex;
 
     // Use this for initialization
     void Start () {
@@ -30,13 +30,15 @@ public class DialogueHandler : MonoBehaviour {      //to use, create an empty ga
         
 	}
 
-    public void ButtonHandler(int index)
+    public void ButtonHandler()
     {
-        button1.GetComponent<ButtonHandler>().skipToIndex = button1SkipToIndex[index];
-		button2.GetComponent<ButtonHandler>().skipToIndex = button2SkipToIndex[index];
-        convoScriptText.GetComponent<ConversationScript>().useButtons = useButtons;
-		convoScriptText.GetComponent<ConversationScript>().indexForButtons = indexForButtons[index];
-		convoScriptText.GetComponent<ConversationScript>().button1Text = button1Text[index];
-		convoScriptText.GetComponent<ConversationScript>().button2Text = button2Text[index];        
+        button1.GetComponent<ButtonHandler>().targetIndex = button1TargetIndex;
+        button1.GetComponent<ButtonHandler>().skipToIndex = button1SkipToIndex;
+        button2.GetComponent<ButtonHandler>().targetIndex = button2TargetIndex;
+        button2.GetComponent<ButtonHandler>().skipToIndex = button2SkipToIndex;
+        convoScriptText.GetComponent<ConversationScript>().useNormalButtons = useButtons;
+        convoScriptText.GetComponent<ConversationScript>().indexForButtons = indexForButtons;
+        convoScriptText.GetComponent<ConversationScript>().button1Text = button1Text;
+        convoScriptText.GetComponent<ConversationScript>().button2Text = button2Text;         
     }
 }
