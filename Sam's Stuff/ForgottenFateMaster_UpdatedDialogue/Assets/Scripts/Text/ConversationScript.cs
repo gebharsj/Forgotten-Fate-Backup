@@ -72,9 +72,20 @@ public class ConversationScript : MonoBehaviour {
 
                 if (button1.GetComponent<ButtonHandler>().buttonClicked)
                 {
-                    convoIndex = button1.GetComponent<ButtonHandler>().skipToIndex;
-                    convoIndex--;
-                }                
+                    if (button1.GetComponent<ButtonHandler>().skipToIndex != 0)
+                    {
+                        convoIndex = button1.GetComponent<ButtonHandler>().skipToIndex;
+                        convoIndex--;
+                    }                    
+                }
+                else if (button2.GetComponent<ButtonHandler>().buttonClicked)
+                {
+                    if (button2.GetComponent<ButtonHandler>().skipToIndex != 0)
+                    {
+                        convoIndex = button2.GetComponent<ButtonHandler>().skipToIndex;
+                        convoIndex--;
+                    } 
+                }
 
                 ResetButtons();
             }
