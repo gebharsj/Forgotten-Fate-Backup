@@ -8,6 +8,8 @@ public class CheckForQuest : MonoBehaviour {
     public GameObject[] list;
     public int counter;
 
+	public bool isCompleted = false;
+
 	// Use this for initialization
 	void Start () {
 	
@@ -27,6 +29,12 @@ public class CheckForQuest : MonoBehaviour {
 					for(int i = 0; i < _NPCArray.Length; i++)
 					{
 						_NPCArray[i].GetComponent<TriggerText>().index = targetIndexArray[i];
+						isCompleted = true;
+
+					}
+					if (isCompleted)
+					{
+						this.gameObject.SetActive(false);
 					}
                 }
             }

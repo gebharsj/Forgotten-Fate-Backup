@@ -5,9 +5,9 @@ using System.Collections;
 public class ButtonHandler : MonoBehaviour {
 
     public Text convoText;
-    public Text buttonTextBox;
-    public int targetIndex;
     public int skipToIndex;
+	public int speakingLinesIndex;
+    public int targetIndex;
     public bool buttonClicked;
 
 	// Use this for initialization
@@ -22,9 +22,13 @@ public class ButtonHandler : MonoBehaviour {
     }
 
     public void ChangeTargetIndex()
+    {        
+        convoText.GetComponent<ConversationScript>().convoIndex = targetIndex;
+        buttonClicked = true;        
+    }
+
+    public void ButtonClicked()
     {
-        //Debug.Log("target index " + targetIndex);
-        convoText.GetComponent<ConversationScript>().convIndex = targetIndex;
         buttonClicked = true;
     }
 }
