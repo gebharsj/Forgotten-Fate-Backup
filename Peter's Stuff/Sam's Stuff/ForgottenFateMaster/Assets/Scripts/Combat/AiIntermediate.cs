@@ -16,7 +16,7 @@ public class AiIntermediate : MonoBehaviour {
     [HideInInspector]
     public float fastMovementSpeed;
 
-    private int random;
+    public int random = 0;
     public float attackTimer;
     private float permentTimer;
 
@@ -64,6 +64,7 @@ public class AiIntermediate : MonoBehaviour {
 
     bool noDamage = true;
     bool runAway = false;
+	bool fightInstead = false;
     public bool objectNav = false;
     public bool enemyNav = false;
 
@@ -109,22 +110,27 @@ public class AiIntermediate : MonoBehaviour {
         }
 
         //-------------Random Chance of Fleeing-------
-        if (runAway == false)
-        {
-            random = 0;
-            if (this.gameObject.GetComponent<EnemiesReceiveDamage>().hp < fleeHealth)
-            {
-                random = Random.Range(1, 5);//fleeNumber);
+		if (fightInstead == false) 
+		{
+			if (runAway == false)
+			{
+				random = 0;
+				if (this.gameObject.GetComponent<EnemiesReceiveDamage> ().hp < fleeHealth) 
+				{
+					random = Random.Range (1, 5);//fleeNumber);
 
-                if (random == 1)
-                {
-                    runAway = true;
-                    //print("Run away!");
-                }
-            }
-        }
-        else
-            MovingPhase(targetPlayer, -fastMovementSpeed);
+					if (random == 1)
+					{
+						runAway = true;
+						//print("Run away!");
+					} 
+					else
+						fightInstead = true;
+				}
+			} 
+			else
+				MovingPhase (targetPlayer, -fastMovementSpeed);
+		}
 
         //------Moves Towards the Player-------------
         if (targetDistance < attackDistance)

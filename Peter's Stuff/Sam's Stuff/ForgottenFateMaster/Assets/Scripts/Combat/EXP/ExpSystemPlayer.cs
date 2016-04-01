@@ -24,4 +24,17 @@ public class ExpSystemPlayer : MonoBehaviour
     {
         maxExp = 100 * playerLevel;
     }
+	public void CalcExp(int enemyLvl)
+	{
+		exp += (enemyLvl * 10);
+		
+		maxExp = 100 * playerLevel;
+		
+		if (exp >= maxExp)
+		{
+			playerLevel++;
+			exp = exp - maxExp;
+			_player.GetComponent<CombatScript>().normalDamage++;
+		}
+	}
 }

@@ -23,7 +23,7 @@ public class TriggerText : MonoBehaviour {
    
 
     public GameObject[] targetArray;
-	[HideInInspector]
+	//[HideInInspector]
     public int index = 0;
 
     //Dialogue Handler variables

@@ -330,7 +330,7 @@ public class EnemiesReceiveDamage : MonoBehaviour {
         tempRect.transform.localScale = CBTPrefab.transform.localScale;
         tempRect.transform.localRotation = CBTPrefab.transform.localRotation;
 
-        Debug.Log(tempRect.transform.localPosition);
+        //Debug.Log(tempRect.transform.localPosition);
 
         temp.GetComponent<Text>().text = text;
         Destroy(temp.gameObject, 3);
