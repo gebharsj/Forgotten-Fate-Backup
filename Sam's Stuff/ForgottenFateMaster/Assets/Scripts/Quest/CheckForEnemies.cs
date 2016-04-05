@@ -18,7 +18,7 @@ public class CheckForEnemies : MonoBehaviour {
         counter = 0;
         foreach (GameObject enemy in enemies)
         {
-            if (enemy == null)
+            if (enemy.activeInHierarchy == false)
             {
                 counter++;
                 if (counter == enemies.Length)
