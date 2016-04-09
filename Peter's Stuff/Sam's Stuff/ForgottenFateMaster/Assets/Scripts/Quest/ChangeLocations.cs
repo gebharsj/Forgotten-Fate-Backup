@@ -4,7 +4,7 @@ using System.Collections;
 public class ChangeLocations : MonoBehaviour 
 {
 	public GameObject _player;
-	//public GameObject _camera;
+	public GameObject _camera;
 	public Transform _destination;
 
 	// Use this for initialization
@@ -24,9 +24,7 @@ public class ChangeLocations : MonoBehaviour
 		if (_other.tag.Equals ("Player")) 
 		{
 			_player.transform.position = _destination.position;
-			//_camera.transform.position.x = _destination.position.x;
-			//_camera.transform.position.y = _destination.position.y;
+            _camera.transform.position = new Vector3(_destination.position.x, _destination.position.y, _camera.transform.position.z);
 		}
 	}
-
 }
