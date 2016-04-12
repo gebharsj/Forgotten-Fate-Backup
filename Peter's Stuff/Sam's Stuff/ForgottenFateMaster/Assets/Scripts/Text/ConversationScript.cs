@@ -43,8 +43,7 @@ public class ConversationScript : MonoBehaviour {
 	int tempConvo1;
 	int tempConvo2;
 
-
-    bool textDone = false;
+    public bool textDone = false;
     public bool buttonClicked;
 
     // Use this for initialization
@@ -59,6 +58,7 @@ public class ConversationScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update () 
 	{
+		print (textDone + " textDone");
         maxconvoIndex = conversation.Length;
 		//------Reset The ConvoIndex When Max Is Hit----------
         if (convoIndex == maxconvoIndex)
@@ -109,32 +109,23 @@ public class ConversationScript : MonoBehaviour {
         {
             if (textDone && !convoDone && (button1.GetComponent<ButtonHandler>().buttonClicked || button2.GetComponent<ButtonHandler>().buttonClicked))
 			{
-				if (button1.GetComponent<ButtonHandler>().buttonClicked)
+				if (button1.GetComponent<ButtonHandler>().buttonClicked && textDone)
                 {
+					print (convoIndex + " before Convo");
 					conversation[convoIndex] = tempString1; //changing dialogue to match button1
 					tempConvo1 = convoIndex + button1.GetComponent<ButtonHandler>().speakingLinesIndex; //delaying the skipToIndex
 					ConvoHandler();
-					/*
-                    if (button1.GetComponent<ButtonHandler>().skipToIndex != 0)
-                    {
-                        convoIndex = button1.GetComponent<ButtonHandler>().skipToIndex;
-                        convoIndex--;
-                    }   */                 
+					print (convoIndex + " After Convo");
                 }
-                else if (button2.GetComponent<ButtonHandler>().buttonClicked)
-                {
+				else if (button2.GetComponent<ButtonHandler>().buttonClicked && textDone)
+				{
+					print (convoIndex + " before Convo");
 					conversation[convoIndex] = tempString2;//changing dialogue to match button1
 					tempConvo2 = convoIndex  + button2.GetComponent<ButtonHandler>().speakingLinesIndex;//delaying the skipToIndex
 					ConvoHandler();
-
-                   /* if (button2.GetComponent<ButtonHandler>().skipToIndex != 0)
-                    {
-                        convoIndex = button2.GetComponent<ButtonHandler>().skipToIndex;
-                        convoIndex--;
-                    } */
+					print (convoIndex + " After Convo");
                 }
 
-               // ResetButtons();
             }
         }
         else if (!button1.activeSelf && !button2.activeSelf)
@@ -164,7 +155,12 @@ public class ConversationScript : MonoBehaviour {
             yield return new WaitForSeconds(PlayerPrefs.GetFloat("WriteSpeed"));
         }
 		CreateTempString ();
-        convoIndex++;
+		//if (button1.GetComponent<ButtonHandler> ().buttonClicked || button2.GetComponent<ButtonHandler> ().buttonClicked)
+		//{
+		//}
+		//else
+       	convoIndex++;
+		print (convoIndex + " after Type");
         textDone = true;       
     }
 

@@ -47,6 +47,7 @@ public class TriggerText : MonoBehaviour {
 
     void OnTriggerStay2D(Collider2D col)
     {
+
         if (col.tag == "Player")
         {
             if (index >= targetArray.Length)
@@ -104,7 +105,8 @@ public class TriggerText : MonoBehaviour {
         faceArray = target.GetComponent<DialogueHandler>().faceArray;
         temp = new string[dialogue.Length];
         faceTemp = new Sprite[faceArray.Length];
-        if (text.GetComponent<ConversationScript>().convoIndex < dialogue.Length)
+       
+		if (text.GetComponent<ConversationScript>().convoIndex < dialogue.Length)
         {
             // DON'T FORGET TO PUT BUTTON WRANGLER ON THE NPC CHILD OBJECT
             target.GetComponent<ButtonWrangler>().ButtonWranglerMethod(text.GetComponent<ConversationScript>().convoIndex);

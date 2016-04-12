@@ -18,17 +18,36 @@ public class ButtonHandler : MonoBehaviour {
 	// Update is called once per frame
     void Update()
     {
-        
+		print (buttonClicked + "buttonClicked");
     }
 
     public void ChangeTargetIndex()
     {        
         convoText.GetComponent<ConversationScript>().convoIndex = targetIndex;
-        buttonClicked = true;        
+
+		if (convoText.GetComponent<ConversationScript> ().textDone) 
+		{
+			print (convoText.GetComponent<ConversationScript> ().textDone + " clicked");
+			buttonClicked = true;
+		}
+		else
+		{
+			print (convoText.GetComponent<ConversationScript> ().textDone + " not clicked");
+			buttonClicked = false;
+		}
     }
 
     public void ButtonClicked()
-    {
-        buttonClicked = true;
+    { 
+		if (convoText.GetComponent<ConversationScript> ().textDone) 
+		{
+			print (convoText.GetComponent<ConversationScript> ().textDone + " clicked");
+			buttonClicked = true;
+		} 
+		else 
+		{
+			print (convoText.GetComponent<ConversationScript> ().textDone + " not clicked");
+			buttonClicked = false;
+		}
     }
 }
