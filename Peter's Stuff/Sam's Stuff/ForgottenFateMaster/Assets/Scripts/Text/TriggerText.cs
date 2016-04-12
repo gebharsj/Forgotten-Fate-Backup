@@ -73,7 +73,6 @@ public class TriggerText : MonoBehaviour {
 					{
 						text.GetComponent<ConversationScript>().convoDone = false;
 						LoopConvo();
-						PassDialogue();
 					}
 					else
 					{
@@ -147,9 +146,16 @@ public class TriggerText : MonoBehaviour {
 
 	void LoopConvo()
 	{
-		print ("FAST LOOP");
-		text.GetComponent<ConversationScript> ().convoIndex = 0;
-		index++;  
+		EndConvo ();
+		GetDialogue ();
+		PassDialogue();
+		BeginConvo();
+		//index++;
+		//text.GetComponent<ConversationScript> ().convoIndex = 0;
+
+		//dialogue = temp;
+		//faceArray = faceTemp;
+		print ("FAST LOOP");  
 	}
 
     //Turns on text box, turns off player HUD & spells,passes NPC image, and disables player movement

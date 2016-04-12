@@ -65,6 +65,11 @@ public class ConversationScript : MonoBehaviour {
         {
             convoDone = true;
             convoIndex = 0;
+
+			if (useMoreButtons)
+			{
+				ResetButtons();
+			}
         }
 		//-----Allows For Multiple Lines of Dialgoue To Be Said With Real Buttons-----------
 		if (convoIndex == tempConvo1) //Button1
