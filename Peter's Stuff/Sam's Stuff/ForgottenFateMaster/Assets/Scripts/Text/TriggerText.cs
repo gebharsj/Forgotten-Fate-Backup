@@ -68,7 +68,7 @@ public class TriggerText : MonoBehaviour {
 	                PassDialogue();
 	                BeginConvo();
 	            }
-                else if (text.GetComponent<ConversationScript>().convoDone && (Input.GetKeyDown(PlayerPrefs.GetString("Interact")) || (uselessButton1.GetComponent<ButtonHandler>().buttonClicked || uselessButton2.GetComponent<ButtonHandler>().buttonClicked)))              //this runs when the dialogue is done
+				else if (text.GetComponent<ConversationScript>().convoDone && (Input.GetKeyDown(PlayerPrefs.GetString("Interact")) || (uselessButton1.GetComponent<UselessButtonHandler>().buttonClicked || uselessButton2.GetComponent<UselessButtonHandler>().buttonClicked)))              //this runs when the dialogue is done
 	            {
 					if (text.GetComponent<ConversationScript>().useMoreButtons)
 					{

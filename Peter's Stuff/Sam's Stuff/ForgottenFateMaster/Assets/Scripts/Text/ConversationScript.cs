@@ -130,13 +130,13 @@ public class ConversationScript : MonoBehaviour {
         }
         else if (!button1.activeSelf && !button2.activeSelf)
         {
-            if (textDone && !convoDone && (uselessButton1.GetComponent<ButtonHandler>().buttonClicked || uselessButton2.GetComponent<ButtonHandler>().buttonClicked))
+			if (textDone && !convoDone && (uselessButton1.GetComponent<UselessButtonHandler>().buttonClicked || uselessButton2.GetComponent<UselessButtonHandler>().buttonClicked))
             {
-				if (uselessButton1.GetComponent<ButtonHandler>().buttonClicked)
+				if (uselessButton1.GetComponent<UselessButtonHandler>().buttonClicked)
 				{
 					conversation[convoIndex] = tempString3;
 				}
-				else if (uselessButton2.GetComponent<ButtonHandler>().buttonClicked)
+				else if (uselessButton2.GetComponent<UselessButtonHandler>().buttonClicked)
 				{
 					conversation[convoIndex] = tempString4;
 				}
@@ -209,8 +209,8 @@ public class ConversationScript : MonoBehaviour {
     {
         button1.GetComponent<ButtonHandler>().buttonClicked = false;
         button2.GetComponent<ButtonHandler>().buttonClicked = false;
-        uselessButton1.GetComponent<ButtonHandler>().buttonClicked = false;
-        uselessButton2.GetComponent<ButtonHandler>().buttonClicked = false;
+		uselessButton1.GetComponent<UselessButtonHandler>().buttonClicked = false;
+		uselessButton2.GetComponent<UselessButtonHandler>().buttonClicked = false;
     }
 
     void ConvoHandler()
