@@ -2,12 +2,10 @@
 using System.Collections;
 
 public class MouseScript : MonoBehaviour {
-    public float distance = 11.05f;
+    // public float distance = 11.05f;
     public Rigidbody2D strikePrefab;
     public Rigidbody2D sparksPrefab;
     public bool hit = false;
-
-
 
     // Use this for initialization
     void Start()
@@ -19,9 +17,12 @@ public class MouseScript : MonoBehaviour {
     void Update()
     {
         Vector3 mousePosition = Input.mousePosition;
-        mousePosition.z = distance;
+        mousePosition.z += 18;
         transform.position = Camera.main.ScreenToWorldPoint(mousePosition);
 
+
+        //if (eventData.pointerCurrentRaycast.gameObject.tag == "InventorySlot") {
+        //	}
     }
     public void Lightning()
     {

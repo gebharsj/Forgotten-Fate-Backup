@@ -1,40 +1,36 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ExpSystemEnemy : MonoBehaviour {
+public class ExpSystemEnemy : MonoBehaviour
+{
 
-	public GameObject _player;
+    public GameObject _player;
 
-	public int enemyLevel = 0;
-	
-	// Use this for initialization
-	void Start () 
-	{ 
+    public int enemyLevel = 0;
 
-	}
-	// Update is called once per frame
-	void Update () 
-	{
+    // Use this for initialization
+    void Start()
+    {
 
-		if (this.gameObject.GetComponent<EnemiesReceiveDamage>().dead) 
-		{
+    }
+    // Update is called once per frame
+    void Update()
+    {
+        if (this.gameObject.GetComponent<EnemiesReceiveDamage>().dead)
+        {
+            _player.GetComponent<ExpSystemPlayer>().exp += (enemyLevel * 10);
 
-			_player.GetComponent<ExpSystemPlayer> ().exp += (enemyLevel * 10);
-	
-			_player.GetComponent<ExpSystemPlayer> ().maxExp = 100 * _player.GetComponent<ExpSystemPlayer> ().playerLevel;
-		
-			if (_player.GetComponent<ExpSystemPlayer> ().exp >= _player.GetComponent<ExpSystemPlayer> ().maxExp) 
-			{
-				_player.GetComponent<ExpSystemPlayer> ().playerLevel++;
-				_player.GetComponent<ExpSystemPlayer> ().exp = 
-							_player.GetComponent<ExpSystemPlayer> ().exp - _player.GetComponent<ExpSystemPlayer> ().maxExp;
-				_player.GetComponent<CombatScript> ().normalDamage++;
+            _player.GetComponent<ExpSystemPlayer>().maxExp = 100 * _player.GetComponent<ExpSystemPlayer>().playerLevel;
 
-				//-------------Level Up Animation-----------------
-				_player.GetComponent<ExpSystemPlayer> ().levelUp = true;
-			}
-			this.gameObject.GetComponent<EnemiesReceiveDamage>().dead = false;
-			this.gameObject.SetActive(false);
-		}
-	}
+            if (_player.GetComponent<ExpSystemPlayer>().exp >= _player.GetComponent<ExpSystemPlayer>().maxExp)
+            {
+                _player.GetComponent<ExpSystemPlayer>().playerLevel++;
+                _player.GetComponent<ExpSystemPlayer>().exp =
+                            _player.GetComponent<ExpSystemPlayer>().exp - _player.GetComponent<ExpSystemPlayer>().maxExp;
+                _player.GetComponent<CombatScript>().normalDamage++;
+            }
+            this.gameObject.GetComponent<EnemiesReceiveDamage>().dead = false;
+            this.gameObject.SetActive(false);
+        }
+    }
 }

@@ -16,9 +16,7 @@ public class CameraZoom : MonoBehaviour
 	// Use this for initialization
 	void Start () 
 	{
-		_player = GameObject.FindGameObjectWithTag("Player"); 
-
-
+		_player = GameObject.FindGameObjectWithTag("Player");
 	}
 	
 	// Update is called once per frame
@@ -32,28 +30,21 @@ public class CameraZoom : MonoBehaviour
 		{
 			if (distance < cameraRange) 
 			{
-				GetComponent<Camera> ().fieldOfView = Mathf.Lerp (GetComponent<Camera> ().fieldOfView, normal, Time.deltaTime * smooth);
+				GetComponent<Camera> ().orthographicSize = Mathf.Lerp (GetComponent<Camera> ().orthographicSize, normal, Time.deltaTime * smooth);
 				cameraSpeed = 1.5f;
 			}
+            else
+            {
+                GetComponent<Camera>().orthographicSize = Mathf.Lerp(GetComponent<Camera>().orthographicSize, zoom, Time.deltaTime * smooth);
+                if (distance > cameraRange + 1)
+                    cameraSpeed = 3.0f;
+            }
 		}
 		else
-			{
-				if (distance < cameraRange)
-				{
-					GetComponent<Camera> ().fieldOfView = Mathf.Lerp (GetComponent<Camera> ().fieldOfView, normal * 1.5f, Time.deltaTime * smooth);
-					cameraSpeed = 1.5f;
-			    }
-			}
-
-
-			
-			if (distance > cameraRange) 
-			{
-				GetComponent<Camera> ().fieldOfView = Mathf.Lerp (GetComponent<Camera> ().fieldOfView, zoom, Time.deltaTime * smooth);
-				if (distance > cameraRange + 1)
-					cameraSpeed = 3.0f;
-			}
+		{
+            GetComponent<Camera>().orthographicSize = Mathf.Lerp(GetComponent<Camera>().orthographicSize, zoom, Time.deltaTime * smooth);
+            if (distance > cameraRange + 1)
+                cameraSpeed = 3.0f;            
+        }		
 	}
-		
-
 }

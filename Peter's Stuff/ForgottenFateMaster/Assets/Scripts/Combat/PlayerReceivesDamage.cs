@@ -19,9 +19,14 @@ public class PlayerReceivesDamage : MonoBehaviour
     float criticalHit = 0f;
     public Transform shieldReflectPrefab;
     public GameObject shieldChild;
+
     //**AUDIO SOURCES**
     [HideInInspector]
     public AudioSource au_miss1;
+    [HideInInspector]
+    public AudioSource au_arrowhit;
+    [HideInInspector]
+    public AudioSource au_swordhit;
 
 
     // Use this for initialization
@@ -33,15 +38,23 @@ public class PlayerReceivesDamage : MonoBehaviour
         miss1 = (AudioClip)Resources.Load("Audio/Combat Sounds/Sword 1", typeof(AudioClip));
         au_miss1.clip = miss1;
 
+        au_arrowhit = gameObject.AddComponent<AudioSource>();
+        AudioClip arrowhit;
+        // Resources must be in any folder named Resources.  load as type and cast as type because Unity returns Object by default.
+        arrowhit = (AudioClip)Resources.Load("Audio/Combat Sounds/weaponBowArrowHitSoundEffect", typeof(AudioClip));
+        au_arrowhit.clip = arrowhit;
+
+        au_swordhit = gameObject.AddComponent<AudioSource>();
+        AudioClip swordhit;
+        // Resources must be in any folder named Resources.  load as type and cast as type because Unity returns Object by default.
+        swordhit = (AudioClip)Resources.Load("Audio/Combat Sounds/weaponSwordHitSoundEffect", typeof(AudioClip));
+        au_swordhit.clip = swordhit;
+
     }
     void Update()
     {
 
-
-
-
     }
-
 
     //pysical damage
     void OnTriggerStay2D(Collider2D enemy)
@@ -77,6 +90,7 @@ public class PlayerReceivesDamage : MonoBehaviour
                 }
                 if (hitChance <= 1 && (hitChance < defDex_calc))
                 {
+                    au_swordhit.Play();
                     hitChance = 2;
                     meleeHits -= 1;
                     damageTaken = enemy.gameObject.GetComponent<EnemiesReceiveDamage>().damage;
@@ -98,7 +112,7 @@ public class PlayerReceivesDamage : MonoBehaviour
                     //Damage caused by critical hit (critical hits do 5 times more than normal damage)
                     if (criticalHit < 2 && criticalHit <= enemy.gameObject.GetComponent<EnemiesReceiveDamage>().criticalChance)
                     {
-                        damageTaken = (damageTaken * 5);
+                        damageTaken = (damageTaken * enemy.gameObject.GetComponent<EnemiesReceiveDamage>().criticalDamage);
                         damageTaken = Mathf.Round(damageTaken * 1.0f) / 1.0f;
                         InitiateCBT(damageTaken.ToString()).GetComponent<Animator>().SetTrigger("Crit");
                         //print ("damageTaken " + damageTaken);
