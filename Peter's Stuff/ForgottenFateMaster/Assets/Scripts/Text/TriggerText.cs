@@ -128,12 +128,14 @@ public class TriggerText : MonoBehaviour {
         player.GetComponent<PlayerMovement>().enabled = false;
         player.GetComponent<Rigidbody2D>().velocity = Vector3.zero;
         player.GetComponent<CombatScript>().enabled = false;
+		text.GetComponent<ConversationScript>().areTalking = true;
     }
 
     //Turns off text box, turns on player HUD & spells, enables player movement, resets conversationscript index
     void EndConvo()
     {
         //print ("normal exit");
+		text.GetComponent<ConversationScript>().areTalking = false;
         panel.SetActive(false);
         spells.SetActive(true);
         playerStatusHUD.SetActive(true);

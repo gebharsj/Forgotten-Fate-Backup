@@ -45,6 +45,7 @@ public class ConversationScript : MonoBehaviour {
 
     public bool textDone = false;
     public bool buttonClicked;
+	public bool areTalking = false;
 
     // Use this for initialization
     void Start()

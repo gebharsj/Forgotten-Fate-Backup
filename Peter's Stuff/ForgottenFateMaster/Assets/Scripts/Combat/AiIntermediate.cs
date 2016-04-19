@@ -1,8 +1,10 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class AiIntermediate : MonoBehaviour {
 
+	public Text text;
     [HideInInspector]
     public float targetDistance;
     public float attackDistance;
@@ -63,10 +65,11 @@ public class AiIntermediate : MonoBehaviour {
     public bool enemyTouch = false;
 
     bool noDamage = true;
-    bool runAway = false;
+    public bool runAway = false;
     bool fightInstead = false;
     public bool objectNav = false;
     public bool enemyNav = false;
+	public bool enemyAttacking = false;
 
     // Use this for initialization
     void Start()
@@ -122,7 +125,6 @@ public class AiIntermediate : MonoBehaviour {
                     if (random == 1)
                     {
                         runAway = true;
-                        //print("Run away!");
                     }
                     else
                         fightInstead = true;
@@ -135,14 +137,19 @@ public class AiIntermediate : MonoBehaviour {
         //------Moves Towards the Player-------------
         if (targetDistance < attackDistance)
         {
-            if (playerTouch == false && runAway == false && objectTouch == false && enemyTouch == false)
+			if (playerTouch == false && runAway == false && objectTouch == false && 
+			    		enemyTouch == false && text.GetComponent<ConversationScript> ().areTalking == false)
             {
-                //print("PlayerNav");
                 MovingPhase(targetPlayer, normalMovementSpeed);
             }
         }
         //-------Enemy Moves Around Obstacle-----------
-        if (objectNav)
+        if (text.GetComponent<ConversationScript> ().areTalking) 
+		{
+			playerTouch = false;
+			MovingPhase(targetObject, 0);
+		}
+		else if (objectNav)
         {
             //print("ObjectNav");
             MovingPhase(targetObject, normalMovementSpeed + 2);
@@ -405,6 +412,7 @@ public class AiIntermediate : MonoBehaviour {
             {
                 if (playerC.gameObject.GetComponent<PlayerReceivesDamage>() != null)
                 {
+					enemyAttacking = true;
                     playerC.gameObject.GetComponent<PlayerReceivesDamage>().meleeHits++;
                     attackTimer = permentTimer;
                 }
